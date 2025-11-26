@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.example.jikgeunbap.app.ui.screen.ai.AiLunchRecommendScreen
+import com.example.jikgeunbap.app.ui.screen.main.MainScreen
 import com.example.jikgeunbap.app.ui.theme.JikGeunBapTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             JikGeunBapTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    AiLunchRecommendScreen(modifier = Modifier.padding(innerPadding))
+                    MainScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
