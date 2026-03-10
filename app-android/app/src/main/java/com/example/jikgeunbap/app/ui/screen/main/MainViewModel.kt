@@ -2,8 +2,8 @@ package com.example.jikgeunbap.app.ui.screen.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.jikgeunbap.app.domain.model.Restaurant
-import com.example.jikgeunbap.app.domain.usecase.GetRandomLunchRestaurantUseCase
+import com.example.jikgeunbap.domain.domain.model.Restaurant
+import com.example.jikgeunbap.domain.domain.usecase.GetRandomLunchRestaurantUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
