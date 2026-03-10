@@ -1,8 +1,8 @@
 package com.example.jikgeunbap.app.di
 
-import com.example.jikgeunbap.app.data.repository.RestaurantRepositoryImpl
-import com.example.jikgeunbap.app.domain.repository.RestaurantRepository
-import com.example.jikgeunbap.app.domain.usecase.GetRandomLunchRestaurantUseCase
+import com.example.jikgeunbap.data.repository.RestaurantRepositoryImpl
+import com.example.jikgeunbap.domain.domain.repository.RestaurantRepository
+import com.example.jikgeunbap.domain.domain.usecase.GetRandomLunchRestaurantUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
