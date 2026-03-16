@@ -1,20 +1,62 @@
 package com.example.jikgeunbap.app.di
 
 import com.example.jikgeunbap.data.repository.RestaurantRepositoryImpl
+import com.example.jikgeunbap.data.source.RemoteRestaurantDataSource
+import com.example.jikgeunbap.data.source.remote.RemoteRestaurantDataSourceImpl
+import com.example.jikgeunbap.data.source.remote.RestaurantApiService
 import com.example.jikgeunbap.domain.domain.repository.RestaurantRepository
 import com.example.jikgeunbap.domain.domain.usecase.GetRandomLunchRestaurantUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
     @Provides
     @Singleton
-    fun provideRestaurantRepository(): RestaurantRepository = RestaurantRepositoryImpl()
+    fun provideOkHttpClient(): OkHttpClient {
+        val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+        return OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(client: OkHttpClient): Retrofit =
+        Retrofit.Builder()
+            // 안드로이드 에뮬레이터에서 로컬호스트에 접근할 때는 10.0.2.2 사용
+            .baseUrl("http://10.0.2.2:8080/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+    @Provides
+    @Singleton
+    fun provideRestaurantApiService(retrofit: Retrofit): RestaurantApiService =
+        retrofit.create(RestaurantApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideRemoteRestaurantDataSource(
+        apiService: RestaurantApiService
+    ): RemoteRestaurantDataSource = RemoteRestaurantDataSourceImpl(apiService)
+
+    @Provides
+    @Singleton
+    fun provideRestaurantRepository(
+        remoteRestaurantDataSource: RemoteRestaurantDataSource
+    ): RestaurantRepository = RestaurantRepositoryImpl(remoteRestaurantDataSource)
 
     @Provides
     @Singleton

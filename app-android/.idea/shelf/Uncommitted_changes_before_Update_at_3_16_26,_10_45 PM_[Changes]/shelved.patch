@@ -1,0 +1,681 @@
+Index: app/build.gradle.kts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import org.gradle.kotlin.dsl.implementation\n\nplugins {\n    alias(libs.plugins.android.application)\n    alias(libs.plugins.jetbrains.kotlin.android)\n    alias(libs.plugins.hilt.android)\n    id(\"kotlin-kapt\")\n}\n\napply(plugin = \"kotlin-kapt\")\n\nandroid {\n    namespace = \"com.example.jikgeunbap.app\"\n    compileSdk = 35\n\n    defaultConfig {\n        applicationId = \"com.example.jikgeunbap.app\"\n        minSdk = 34\n        targetSdk = 35\n        versionCode = 1\n        versionName = \"1.0\"\n\n        testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\"\n        vectorDrawables {\n            useSupportLibrary = true\n        }\n    }\n    buildTypes {\n        release {\n            isMinifyEnabled = false\n            proguardFiles(\n                getDefaultProguardFile(\"proguard-android-optimize.txt\"),\n                \"proguard-rules.pro\"\n            )\n        }\n    }\n    compileOptions {\n        sourceCompatibility = JavaVersion.VERSION_1_8\n        targetCompatibility = JavaVersion.VERSION_1_8\n    }\n    kotlinOptions {\n        jvmTarget = \"1.8\"\n    }\n    buildFeatures {\n        compose = true\n    }\n    hilt{\n        enableAggregatingTask = false\n    }\n    composeOptions {\n        kotlinCompilerExtensionVersion = \"1.5.13\"\n    }\n    packaging {\n        resources {\n            excludes += \"/META-INF/{AL2.0,LGPL2.1}\"\n        }\n    }\n}\n\ndependencies {\n    implementation(project(\":domain\"))\n    implementation(project(\":data\"))\n    implementation(libs.androidx.core.ktx)\n    implementation(libs.androidx.lifecycle.runtime.ktx)\n    implementation(libs.androidx.activity.compose)\n    implementation(platform(libs.androidx.compose.bom))\n    implementation(libs.androidx.ui)\n    implementation(libs.androidx.ui.graphics)\n    implementation(libs.androidx.ui.tooling.preview)\n    implementation(libs.androidx.material3)\n    testImplementation(libs.junit)\n    androidTestImplementation(libs.androidx.junit)\n    androidTestImplementation(libs.androidx.espresso.core)\n    androidTestImplementation(platform(libs.androidx.compose.bom))\n    androidTestImplementation(libs.androidx.ui.test.junit4)\n    debugImplementation(libs.androidx.ui.tooling)\n    debugImplementation(libs.androidx.ui.test.manifest)\n    implementation(libs.androidx.lifecycle.viewmodel.compose)\n    implementation(libs.hilt.android)\n    implementation(libs.hilt.navigation.compose)\n    kapt(libs.hilt.compiler)\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle.kts b/app/build.gradle.kts
+--- a/app/build.gradle.kts	(revision 7ae0f7892ddaae5d924b664e8248e8db8fee2fd8)
++++ b/app/build.gradle.kts	(date 1773668431843)
+@@ -79,4 +79,7 @@
+     implementation(libs.hilt.android)
+     implementation(libs.hilt.navigation.compose)
+     kapt(libs.hilt.compiler)
++    implementation("com.squareup.retrofit2:retrofit:2.11.0")
++    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
++    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+ }
+\ No newline at end of file
+Index: ../backend/build/reports/tests/test/packages/com.jikgeunbap.demo.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\n<html>\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n<meta http-equiv=\"x-ua-compatible\" content=\"IE=edge\"/>\n<title>Test results - Package com.jikgeunbap.demo</title>\n<link href=\"../css/base-style.css\" rel=\"stylesheet\" type=\"text/css\"/>\n<link href=\"../css/style.css\" rel=\"stylesheet\" type=\"text/css\"/>\n<script src=\"../js/report.js\" type=\"text/javascript\"></script>\n</head>\n<body>\n<div id=\"content\">\n<h1>Package com.jikgeunbap.demo</h1>\n<div class=\"breadcrumbs\">\n<a href=\"../index.html\">all</a> &gt; com.jikgeunbap.demo</div>\n<div id=\"summary\">\n<table>\n<tr>\n<td>\n<div class=\"summaryGroup\">\n<table>\n<tr>\n<td>\n<div class=\"infoBox\" id=\"tests\">\n<div class=\"counter\">1</div>\n<p>tests</p>\n</div>\n</td>\n<td>\n<div class=\"infoBox\" id=\"failures\">\n<div class=\"counter\">0</div>\n<p>failures</p>\n</div>\n</td>\n<td>\n<div class=\"infoBox\" id=\"ignored\">\n<div class=\"counter\">0</div>\n<p>ignored</p>\n</div>\n</td>\n<td>\n<div class=\"infoBox\" id=\"duration\">\n<div class=\"counter\">0.386s</div>\n<p>duration</p>\n</div>\n</td>\n</tr>\n</table>\n</div>\n</td>\n<td>\n<div class=\"infoBox success\" id=\"successRate\">\n<div class=\"percent\">100%</div>\n<p>successful</p>\n</div>\n</td>\n</tr>\n</table>\n</div>\n<div id=\"tabs\">\n<ul class=\"tabLinks\">\n<li>\n<a href=\"#tab0\">Classes</a>\n</li>\n</ul>\n<div id=\"tab0\" class=\"tab\">\n<h2>Classes</h2>\n<table>\n<thead>\n<tr>\n<th>Class</th>\n<th>Tests</th>\n<th>Failures</th>\n<th>Ignored</th>\n<th>Duration</th>\n<th>Success rate</th>\n</tr>\n</thead>\n<tr>\n<td class=\"success\">\n<a href=\"../classes/com.jikgeunbap.demo.JikgeunbapServerApplicationTests.html\">JikgeunbapServerApplicationTests</a>\n</td>\n<td>1</td>\n<td>0</td>\n<td>0</td>\n<td>0.386s</td>\n<td class=\"success\">100%</td>\n</tr>\n</table>\n</div>\n</div>\n<div id=\"footer\">\n<p>\n<div>\n<label class=\"hidden\" id=\"label-for-line-wrapping-toggle\" for=\"line-wrapping-toggle\">Wrap lines\n<input id=\"line-wrapping-toggle\" type=\"checkbox\" autocomplete=\"off\"/>\n</label>\n</div>Generated by \n<a href=\"http://www.gradle.org\">Gradle 8.5</a> at Mar 13, 2026, 9:28:07 PM</p>\n</div>\n</div>\n</body>\n</html>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../backend/build/reports/tests/test/packages/com.jikgeunbap.demo.html b/../backend/build/reports/tests/test/packages/com.jikgeunbap.demo.html
+--- a/../backend/build/reports/tests/test/packages/com.jikgeunbap.demo.html	(revision 7ae0f7892ddaae5d924b664e8248e8db8fee2fd8)
++++ b/../backend/build/reports/tests/test/packages/com.jikgeunbap.demo.html	(date 1773666928414)
+@@ -40,7 +40,7 @@
+ </td>
+ <td>
+ <div class="infoBox" id="duration">
+-<div class="counter">0.386s</div>
++<div class="counter">1.116s</div>
+ <p>duration</p>
+ </div>
+ </td>
+@@ -83,7 +83,7 @@
+ <td>1</td>
+ <td>0</td>
+ <td>0</td>
+-<td>0.386s</td>
++<td>1.116s</td>
+ <td class="success">100%</td>
+ </tr>
+ </table>
+@@ -96,7 +96,7 @@
+ <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+ </label>
+ </div>Generated by 
+-<a href="http://www.gradle.org">Gradle 8.5</a> at Mar 13, 2026, 9:28:07 PM</p>
++<a href="http://www.gradle.org">Gradle 8.5</a> at Mar 16, 2026, 10:15:28 PM</p>
+ </div>
+ </div>
+ </body>
+Index: ../backend/build/reports/tests/test/classes/com.jikgeunbap.demo.JikgeunbapServerApplicationTests.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\n<html>\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n<meta http-equiv=\"x-ua-compatible\" content=\"IE=edge\"/>\n<title>Test results - JikgeunbapServerApplicationTests</title>\n<link href=\"../css/base-style.css\" rel=\"stylesheet\" type=\"text/css\"/>\n<link href=\"../css/style.css\" rel=\"stylesheet\" type=\"text/css\"/>\n<script src=\"../js/report.js\" type=\"text/javascript\"></script>\n</head>\n<body>\n<div id=\"content\">\n<h1>JikgeunbapServerApplicationTests</h1>\n<div class=\"breadcrumbs\">\n<a href=\"../index.html\">all</a> &gt; \n<a href=\"../packages/com.jikgeunbap.demo.html\">com.jikgeunbap.demo</a> &gt; JikgeunbapServerApplicationTests</div>\n<div id=\"summary\">\n<table>\n<tr>\n<td>\n<div class=\"summaryGroup\">\n<table>\n<tr>\n<td>\n<div class=\"infoBox\" id=\"tests\">\n<div class=\"counter\">1</div>\n<p>tests</p>\n</div>\n</td>\n<td>\n<div class=\"infoBox\" id=\"failures\">\n<div class=\"counter\">0</div>\n<p>failures</p>\n</div>\n</td>\n<td>\n<div class=\"infoBox\" id=\"ignored\">\n<div class=\"counter\">0</div>\n<p>ignored</p>\n</div>\n</td>\n<td>\n<div class=\"infoBox\" id=\"duration\">\n<div class=\"counter\">0.386s</div>\n<p>duration</p>\n</div>\n</td>\n</tr>\n</table>\n</div>\n</td>\n<td>\n<div class=\"infoBox success\" id=\"successRate\">\n<div class=\"percent\">100%</div>\n<p>successful</p>\n</div>\n</td>\n</tr>\n</table>\n</div>\n<div id=\"tabs\">\n<ul class=\"tabLinks\">\n<li>\n<a href=\"#tab0\">Tests</a>\n</li>\n<li>\n<a href=\"#tab1\">Standard output</a>\n</li>\n</ul>\n<div id=\"tab0\" class=\"tab\">\n<h2>Tests</h2>\n<table>\n<thead>\n<tr>\n<th>Test</th>\n<th>Duration</th>\n<th>Result</th>\n</tr>\n</thead>\n<tr>\n<td class=\"success\">contextLoads()</td>\n<td class=\"success\">0.386s</td>\n<td class=\"success\">passed</td>\n</tr>\n</table>\n</div>\n<div id=\"tab1\" class=\"tab\">\n<h2>Standard output</h2>\n<span class=\"code\">\n<pre>21:28:05.555 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.jikgeunbap.demo.JikgeunbapServerApplicationTests]: JikgeunbapServerApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.\n21:28:05.598 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.jikgeunbap.JikgeunbapServerApplication for test class com.jikgeunbap.demo.JikgeunbapServerApplicationTests\n\n  .   ____          _            __ _ _\n /\\\\ / ___'_ __ _ _(_)_ __  __ _ \\ \\ \\ \\\n( ( )\\___ | '_ | '_| | '_ \\/ _` | \\ \\ \\ \\\n \\\\/  ___)| |_)| | | | | || (_| |  ) ) ) )\n  '  |____| .__|_| |_|_| |_\\__, | / / / /\n =========|_|==============|___/=/_/_/_/\n :: Spring Boot ::                (v3.2.3)\n\n2026-03-13T21:28:05.762+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : Starting JikgeunbapServerApplicationTests using Java 17.0.9 with PID 8798 (started by leeugun123 in /Users/leeugun123/Desktop/project/JikGeunBap/backend)\n2026-03-13T21:28:05.764+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : No active profile set, falling back to 1 default profile: &quot;default&quot;\n2026-03-13T21:28:06.021+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.\n2026-03-13T21:28:06.040+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 16 ms. Found 1 JPA repository interface.\n2026-03-13T21:28:06.198+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]\n2026-03-13T21:28:06.220+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final\n2026-03-13T21:28:06.232+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled\n2026-03-13T21:28:06.318+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer\n2026-03-13T21:28:06.330+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...\n2026-03-13T21:28:06.414+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:jikgeunbapdb user=SA\n2026-03-13T21:28:06.415+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.\n2026-03-13T21:28:06.748+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)\nHibernate: \n    drop table if exists restaurants cascade \nHibernate: \n    create table restaurants (\n        latitude float(53),\n        longitude float(53),\n        rating float(53),\n        rating_count integer,\n        id bigint generated by default as identity,\n        category varchar(255),\n        name varchar(255),\n        tags varchar(255),\n        primary key (id)\n    )\n2026-03-13T21:28:06.763+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'\n2026-03-13T21:28:07.059+09:00  WARN 8798 --- [jikgeunbap-server] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning\n2026-03-13T21:28:07.239+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:jikgeunbapdb'\n2026-03-13T21:28:07.299+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : Started JikgeunbapServerApplicationTests in 1.608 seconds (process running for 2.139)\nHibernate: \n    select\n        count(*) \n    from\n        restaurants r1_0\nHibernate: \n    insert \n    into\n        restaurants\n        (category, latitude, longitude, name, rating, rating_count, tags, id) \n    values\n        (?, ?, ?, ?, ?, ?, ?, default)\nHibernate: \n    insert \n    into\n        restaurants\n        (category, latitude, longitude, name, rating, rating_count, tags, id) \n    values\n        (?, ?, ?, ?, ?, ?, ?, default)\nHibernate: \n    insert \n    into\n        restaurants\n        (category, latitude, longitude, name, rating, rating_count, tags, id) \n    values\n        (?, ?, ?, ?, ?, ?, ?, default)\nHibernate: \n    insert \n    into\n        restaurants\n        (category, latitude, longitude, name, rating, rating_count, tags, id) \n    values\n        (?, ?, ?, ?, ?, ?, ?, default)\n</pre>\n</span>\n</div>\n</div>\n<div id=\"footer\">\n<p>\n<div>\n<label class=\"hidden\" id=\"label-for-line-wrapping-toggle\" for=\"line-wrapping-toggle\">Wrap lines\n<input id=\"line-wrapping-toggle\" type=\"checkbox\" autocomplete=\"off\"/>\n</label>\n</div>Generated by \n<a href=\"http://www.gradle.org\">Gradle 8.5</a> at Mar 13, 2026, 9:28:07 PM</p>\n</div>\n</div>\n</body>\n</html>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../backend/build/reports/tests/test/classes/com.jikgeunbap.demo.JikgeunbapServerApplicationTests.html b/../backend/build/reports/tests/test/classes/com.jikgeunbap.demo.JikgeunbapServerApplicationTests.html
+--- a/../backend/build/reports/tests/test/classes/com.jikgeunbap.demo.JikgeunbapServerApplicationTests.html	(revision 7ae0f7892ddaae5d924b664e8248e8db8fee2fd8)
++++ b/../backend/build/reports/tests/test/classes/com.jikgeunbap.demo.JikgeunbapServerApplicationTests.html	(date 1773666928415)
+@@ -41,7 +41,7 @@
+ </td>
+ <td>
+ <div class="infoBox" id="duration">
+-<div class="counter">0.386s</div>
++<div class="counter">1.116s</div>
+ <p>duration</p>
+ </div>
+ </td>
+@@ -79,7 +79,7 @@
+ </thead>
+ <tr>
+ <td class="success">contextLoads()</td>
+-<td class="success">0.386s</td>
++<td class="success">1.116s</td>
+ <td class="success">passed</td>
+ </tr>
+ </table>
+@@ -87,8 +87,8 @@
+ <div id="tab1" class="tab">
+ <h2>Standard output</h2>
+ <span class="code">
+-<pre>21:28:05.555 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.jikgeunbap.demo.JikgeunbapServerApplicationTests]: JikgeunbapServerApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+-21:28:05.598 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.jikgeunbap.JikgeunbapServerApplication for test class com.jikgeunbap.demo.JikgeunbapServerApplicationTests
++<pre>22:15:20.188 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.jikgeunbap.demo.JikgeunbapServerApplicationTests]: JikgeunbapServerApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
++22:15:20.483 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.jikgeunbap.JikgeunbapServerApplication for test class com.jikgeunbap.demo.JikgeunbapServerApplicationTests
+ 
+   .   ____          _            __ _ _
+  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+@@ -98,18 +98,18 @@
+  =========|_|==============|___/=/_/_/_/
+  :: Spring Boot ::                (v3.2.3)
+ 
+-2026-03-13T21:28:05.762+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : Starting JikgeunbapServerApplicationTests using Java 17.0.9 with PID 8798 (started by leeugun123 in /Users/leeugun123/Desktop/project/JikGeunBap/backend)
+-2026-03-13T21:28:05.764+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : No active profile set, falling back to 1 default profile: &quot;default&quot;
+-2026-03-13T21:28:06.021+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+-2026-03-13T21:28:06.040+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 16 ms. Found 1 JPA repository interface.
+-2026-03-13T21:28:06.198+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+-2026-03-13T21:28:06.220+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+-2026-03-13T21:28:06.232+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+-2026-03-13T21:28:06.318+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+-2026-03-13T21:28:06.330+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+-2026-03-13T21:28:06.414+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:jikgeunbapdb user=SA
+-2026-03-13T21:28:06.415+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+-2026-03-13T21:28:06.748+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
++2026-03-16T22:15:21.462+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : Starting JikgeunbapServerApplicationTests using Java 17.0.9 with PID 3261 (started by leeugun123 in /Users/leeugun123/Desktop/project/JikGeunBap/backend)
++2026-03-16T22:15:21.465+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : No active profile set, falling back to 1 default profile: &quot;default&quot;
++2026-03-16T22:15:22.583+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
++2026-03-16T22:15:22.663+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 72 ms. Found 1 JPA repository interface.
++2026-03-16T22:15:23.426+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
++2026-03-16T22:15:23.513+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
++2026-03-16T22:15:23.573+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
++2026-03-16T22:15:24.010+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
++2026-03-16T22:15:24.047+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
++2026-03-16T22:15:24.314+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:jikgeunbapdb user=SA
++2026-03-16T22:15:24.315+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
++2026-03-16T22:15:25.346+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+ Hibernate: 
+     drop table if exists restaurants cascade 
+ Hibernate: 
+@@ -124,10 +124,10 @@
+         tags varchar(255),
+         primary key (id)
+     )
+-2026-03-13T21:28:06.763+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+-2026-03-13T21:28:07.059+09:00  WARN 8798 --- [jikgeunbap-server] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+-2026-03-13T21:28:07.239+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:jikgeunbapdb'
+-2026-03-13T21:28:07.299+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : Started JikgeunbapServerApplicationTests in 1.608 seconds (process running for 2.139)
++2026-03-16T22:15:25.374+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
++2026-03-16T22:15:25.771+09:00  WARN 3261 --- [jikgeunbap-server] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
++2026-03-16T22:15:26.298+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:jikgeunbapdb'
++2026-03-16T22:15:26.457+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : Started JikgeunbapServerApplicationTests in 5.492 seconds (process running for 9.876)
+ Hibernate: 
+     select
+         count(*) 
+@@ -172,7 +172,7 @@
+ <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+ </label>
+ </div>Generated by 
+-<a href="http://www.gradle.org">Gradle 8.5</a> at Mar 13, 2026, 9:28:07 PM</p>
++<a href="http://www.gradle.org">Gradle 8.5</a> at Mar 16, 2026, 10:15:28 PM</p>
+ </div>
+ </div>
+ </body>
+Index: data/src/main/java/com/example/jikgeunbap/data/source/RemoteRestaurantDataSource.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.jikgeunbap.data.source\n\nimport com.example.jikgeunbap.domain.domain.model.Restaurant\n\ninterface RemoteRestaurantDataSource {\n    fun fetchRestaurants(): List<Restaurant>\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/data/src/main/java/com/example/jikgeunbap/data/source/RemoteRestaurantDataSource.kt b/data/src/main/java/com/example/jikgeunbap/data/source/RemoteRestaurantDataSource.kt
+--- a/data/src/main/java/com/example/jikgeunbap/data/source/RemoteRestaurantDataSource.kt	(revision 7ae0f7892ddaae5d924b664e8248e8db8fee2fd8)
++++ b/data/src/main/java/com/example/jikgeunbap/data/source/RemoteRestaurantDataSource.kt	(date 1773668265524)
+@@ -1,7 +1,5 @@
+ package com.example.jikgeunbap.data.source
+ 
+-import com.example.jikgeunbap.domain.domain.model.Restaurant
+-
+ interface RemoteRestaurantDataSource {
+-    fun fetchRestaurants(): List<Restaurant>
++    suspend fun fetchRestaurants(): List<com.example.jikgeunbap.domain.domain.model.Restaurant>
+ }
+Index: ../backend/.idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"GradleSettings\">\n    <option name=\"linkedExternalProjectsSettings\">\n      <GradleProjectSettings>\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\n        <option name=\"modules\">\n          <set>\n            <option value=\"$PROJECT_DIR$\" />\n          </set>\n        </option>\n      </GradleProjectSettings>\n    </option>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../backend/.idea/gradle.xml b/../backend/.idea/gradle.xml
+--- a/../backend/.idea/gradle.xml	(revision 7ae0f7892ddaae5d924b664e8248e8db8fee2fd8)
++++ b/../backend/.idea/gradle.xml	(date 1773405991303)
+@@ -1,5 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="GradleMigrationSettings" migrationVersion="1" />
+   <component name="GradleSettings">
+     <option name="linkedExternalProjectsSettings">
+       <GradleProjectSettings>
+Index: app/src/main/java/com/example/jikgeunbap/app/di/AppModule.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.jikgeunbap.app.di\n\nimport com.example.jikgeunbap.data.repository.RestaurantRepositoryImpl\nimport com.example.jikgeunbap.domain.domain.repository.RestaurantRepository\nimport com.example.jikgeunbap.domain.domain.usecase.GetRandomLunchRestaurantUseCase\nimport dagger.Module\nimport dagger.Provides\nimport dagger.hilt.InstallIn\nimport dagger.hilt.components.SingletonComponent\nimport javax.inject.Singleton\n\n@Module\n@InstallIn(SingletonComponent::class)\nobject AppModule {\n    @Provides\n    @Singleton\n    fun provideRestaurantRepository(): RestaurantRepository = RestaurantRepositoryImpl()\n\n    @Provides\n    @Singleton\n    fun provideGetRandomLunchRestaurantUseCase(repository: RestaurantRepository): GetRandomLunchRestaurantUseCase =\n        GetRandomLunchRestaurantUseCase(repository)\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/jikgeunbap/app/di/AppModule.kt b/app/src/main/java/com/example/jikgeunbap/app/di/AppModule.kt
+--- a/app/src/main/java/com/example/jikgeunbap/app/di/AppModule.kt	(revision 7ae0f7892ddaae5d924b664e8248e8db8fee2fd8)
++++ b/app/src/main/java/com/example/jikgeunbap/app/di/AppModule.kt	(date 1773668515411)
+@@ -1,20 +1,62 @@
+ package com.example.jikgeunbap.app.di
+ 
+ import com.example.jikgeunbap.data.repository.RestaurantRepositoryImpl
++import com.example.jikgeunbap.data.source.RemoteRestaurantDataSource
++import com.example.jikgeunbap.data.source.remote.RemoteRestaurantDataSourceImpl
++import com.example.jikgeunbap.data.source.remote.RestaurantApiService
+ import com.example.jikgeunbap.domain.domain.repository.RestaurantRepository
+ import com.example.jikgeunbap.domain.domain.usecase.GetRandomLunchRestaurantUseCase
+ import dagger.Module
+ import dagger.Provides
+ import dagger.hilt.InstallIn
+ import dagger.hilt.components.SingletonComponent
++import okhttp3.OkHttpClient
++import okhttp3.logging.HttpLoggingInterceptor
++import retrofit2.Retrofit
++import retrofit2.converter.gson.GsonConverterFactory
+ import javax.inject.Singleton
+ 
+ @Module
+ @InstallIn(SingletonComponent::class)
+ object AppModule {
++
++    @Provides
++    @Singleton
++    fun provideOkHttpClient(): OkHttpClient {
++        val logging = HttpLoggingInterceptor().apply {
++            level = HttpLoggingInterceptor.Level.BODY
++        }
++        return OkHttpClient.Builder()
++            .addInterceptor(logging)
++            .build()
++    }
++
++    @Provides
++    @Singleton
++    fun provideRetrofit(client: OkHttpClient): Retrofit =
++        Retrofit.Builder()
++            // 안드로이드 에뮬레이터에서 로컬호스트에 접근할 때는 10.0.2.2 사용
++            .baseUrl("http://10.0.2.2:8080/")
++            .client(client)
++            .addConverterFactory(GsonConverterFactory.create())
++            .build()
++
++    @Provides
++    @Singleton
++    fun provideRestaurantApiService(retrofit: Retrofit): RestaurantApiService =
++        retrofit.create(RestaurantApiService::class.java)
++
++    @Provides
++    @Singleton
++    fun provideRemoteRestaurantDataSource(
++        apiService: RestaurantApiService
++    ): RemoteRestaurantDataSource = RemoteRestaurantDataSourceImpl(apiService)
++
+     @Provides
+     @Singleton
+-    fun provideRestaurantRepository(): RestaurantRepository = RestaurantRepositoryImpl()
++    fun provideRestaurantRepository(
++        remoteRestaurantDataSource: RemoteRestaurantDataSource
++    ): RestaurantRepository = RestaurantRepositoryImpl(remoteRestaurantDataSource)
+ 
+     @Provides
+     @Singleton
+Index: ../backend/src/main/java/com/jikgeunbap/HelloController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.jikgeunbap;\n\nimport org.springframework.web.bind.annotation.GetMapping;\nimport org.springframework.web.bind.annotation.RestController;\n\n@RestController\npublic class HelloController {\n\n    @GetMapping(\"/\")\n    public String index() {\n        return \"스프링 부트 프로젝트가 성공적으로 fewfwfwfe다!\";\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../backend/src/main/java/com/jikgeunbap/HelloController.java b/../backend/src/main/java/com/jikgeunbap/HelloController.java
+--- a/../backend/src/main/java/com/jikgeunbap/HelloController.java	(revision 7ae0f7892ddaae5d924b664e8248e8db8fee2fd8)
++++ b/../backend/src/main/java/com/jikgeunbap/HelloController.java	(date 1773666730257)
+@@ -6,8 +6,8 @@
+ @RestController
+ public class HelloController {
+ 
+-    @GetMapping("/")
+-    public String index() {
+-        return "스프링 부트 프로젝트가 성공적으로 fewfwfwfe다!";
++    @GetMapping("/api/health")
++    public String health() {
++        return "ok";
+     }
+ }
+\ No newline at end of file
+Index: data/src/main/java/com/example/jikgeunbap/data/repository/RestaurantRepositoryImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.jikgeunbap.data.repository\n\nimport com.example.jikgeunbap.domain.domain.model.Restaurant\nimport com.example.jikgeunbap.domain.domain.repository.RestaurantRepository\nimport jakarta.inject.Inject\n\n\nclass RestaurantRepositoryImpl @Inject constructor() : RestaurantRepository {\n    override fun getRestaurants(): List<Restaurant> {\n        return listOf(\n            Restaurant(id = 1, name = \"김밥천국\", category = \"한식\", distance = 150, imageUrl = null, tags = listOf(\"분식\", \"가성비\")),\n            Restaurant(id = 2, name = \"파스타까페\", category = \"양식\", distance = 400, imageUrl = null, tags = listOf(\"파스타\", \"데이트\")),\n            Restaurant(id = 3, name = \"한솥도시락\", category = \"도시락\", distance = 120, imageUrl = null, tags = listOf(\"도시락\", \"테이크아웃\")),\n            Restaurant(id = 4, name = \"사보텐\", category = \"일식\", distance = 250, imageUrl = null, tags = listOf(\"돈가스\", \"튀김\"))\n        )\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/data/src/main/java/com/example/jikgeunbap/data/repository/RestaurantRepositoryImpl.kt b/data/src/main/java/com/example/jikgeunbap/data/repository/RestaurantRepositoryImpl.kt
+--- a/data/src/main/java/com/example/jikgeunbap/data/repository/RestaurantRepositoryImpl.kt	(revision 7ae0f7892ddaae5d924b664e8248e8db8fee2fd8)
++++ b/data/src/main/java/com/example/jikgeunbap/data/repository/RestaurantRepositoryImpl.kt	(date 1773668282056)
+@@ -1,17 +1,16 @@
+ package com.example.jikgeunbap.data.repository
+ 
+-import com.example.jikgeunbap.domain.domain.model.Restaurant
++import com.example.jikgeunbap.data.source.RemoteRestaurantDataSource
+ import com.example.jikgeunbap.domain.domain.repository.RestaurantRepository
+-import jakarta.inject.Inject
++import com.example.jikgeunbap.domain.domain.model.Restaurant
++import javax.inject.Inject
+ 
+ 
+-class RestaurantRepositoryImpl @Inject constructor() : RestaurantRepository {
+-    override fun getRestaurants(): List<Restaurant> {
+-        return listOf(
+-            Restaurant(id = 1, name = "김밥천국", category = "한식", distance = 150, imageUrl = null, tags = listOf("분식", "가성비")),
+-            Restaurant(id = 2, name = "파스타까페", category = "양식", distance = 400, imageUrl = null, tags = listOf("파스타", "데이트")),
+-            Restaurant(id = 3, name = "한솥도시락", category = "도시락", distance = 120, imageUrl = null, tags = listOf("도시락", "테이크아웃")),
+-            Restaurant(id = 4, name = "사보텐", category = "일식", distance = 250, imageUrl = null, tags = listOf("돈가스", "튀김"))
+-        )
++class RestaurantRepositoryImpl @Inject constructor(
++    private val remoteRestaurantDataSource: RemoteRestaurantDataSource
++) : RestaurantRepository {
++
++    override suspend fun getRestaurants(): List<Restaurant> {
++        return remoteRestaurantDataSource.fetchRestaurants()
+     }
+ }
+Index: ../backend/src/main/java/com/jikgeunbap/restaurant/service/RestaurantService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.jikgeunbap.restaurant.service;\n\nimport com.jikgeunbap.restaurant.dto.RestaurantResponse;\nimport com.jikgeunbap.restaurant.entity.Restaurant;\nimport com.jikgeunbap.restaurant.repository.RestaurantRepository;\nimport lombok.RequiredArgsConstructor;\nimport org.springframework.stereotype.Service;\n\nimport java.util.List;\n\n@Service\n@RequiredArgsConstructor\npublic class RestaurantService {\n\n    private final RestaurantRepository restaurantRepository;\n\n    public List<RestaurantResponse> getNearby(double lat, double lng, int radiusMeter) {\n        List<Restaurant> all = restaurantRepository.findAll();\n\n        return all.stream()\n                .map(r -> {\n                    int distance = (int) distanceInMeter(lat, lng, r.getLatitude(), r.getLongitude());\n                    return new Object[]{r, distance};\n                })\n                .filter(arr -> (int) arr[1] <= radiusMeter)\n                .sorted((a, b) -> Integer.compare((int) a[1], (int) b[1]))\n                .map(arr -> {\n                    Restaurant r = (Restaurant) arr[0];\n                    int distance = (int) arr[1];\n                    return RestaurantResponse.from(r, distance);\n                })\n                .toList();\n    }\n\n    private double distanceInMeter(double lat1, double lon1, Double lat2, Double lon2) {\n        if (lat2 == null || lon2 == null) return Double.MAX_VALUE;\n\n        double R = 6371e3;\n        double phi1 = Math.toRadians(lat1);\n        double phi2 = Math.toRadians(lat2);\n        double dPhi = Math.toRadians(lat2 - lat1);\n        double dLambda = Math.toRadians(lon2 - lon1);\n\n        double a = Math.sin(dPhi / 2) * Math.sin(dPhi / 2)\n                + Math.cos(phi1) * Math.cos(phi2)\n                * Math.sin(dLambda / 2) * Math.sin(dLambda / 2);\n        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));\n\n        return R * c;\n    }\n}\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../backend/src/main/java/com/jikgeunbap/restaurant/service/RestaurantService.java b/../backend/src/main/java/com/jikgeunbap/restaurant/service/RestaurantService.java
+--- a/../backend/src/main/java/com/jikgeunbap/restaurant/service/RestaurantService.java	(revision 7ae0f7892ddaae5d924b664e8248e8db8fee2fd8)
++++ b/../backend/src/main/java/com/jikgeunbap/restaurant/service/RestaurantService.java	(date 1773666744020)
+@@ -6,7 +6,10 @@
+ import lombok.RequiredArgsConstructor;
+ import org.springframework.stereotype.Service;
+ 
++import java.util.Comparator;
+ import java.util.List;
++import java.util.Locale;
++import java.util.Optional;
+ 
+ @Service
+ @RequiredArgsConstructor
+@@ -14,24 +17,59 @@
+ 
+     private final RestaurantRepository restaurantRepository;
+ 
+-    public List<RestaurantResponse> getNearby(double lat, double lng, int radiusMeter) {
++    public List<RestaurantResponse> getNearby(
++            double lat,
++            double lng,
++            int radiusMeter,
++            String category,
++            Sort sort
++    ) {
+         List<Restaurant> all = restaurantRepository.findAll();
+ 
++        String normalizedCategory = category == null ? null : category.trim();
++
++        Comparator<Candidate> comparator = switch (sort) {
++            case RATING -> Comparator
++                    .comparingDouble(Candidate::rating).reversed()
++                    .thenComparingInt(Candidate::distanceMeter);
++            case RECOMMEND -> Comparator
++                    .comparingDouble(Candidate::score).reversed()
++                    .thenComparingInt(Candidate::distanceMeter);
++            case DISTANCE -> Comparator
++                    .comparingInt(Candidate::distanceMeter)
++                    .thenComparingDouble(Candidate::rating).reversed();
++        };
++
+         return all.stream()
+-                .map(r -> {
+-                    int distance = (int) distanceInMeter(lat, lng, r.getLatitude(), r.getLongitude());
+-                    return new Object[]{r, distance};
+-                })
+-                .filter(arr -> (int) arr[1] <= radiusMeter)
+-                .sorted((a, b) -> Integer.compare((int) a[1], (int) b[1]))
+-                .map(arr -> {
+-                    Restaurant r = (Restaurant) arr[0];
+-                    int distance = (int) arr[1];
+-                    return RestaurantResponse.from(r, distance);
+-                })
++                .filter(r -> normalizedCategory == null || normalizedCategory.isBlank()
++                        || (r.getCategory() != null && r.getCategory().equalsIgnoreCase(normalizedCategory)))
++                .map(r -> toCandidate(lat, lng, r))
++                .filter(c -> c.distanceMeter() <= radiusMeter)
++                .sorted(comparator)
++                .map(c -> RestaurantResponse.from(c.restaurant(), c.distanceMeter()))
+                 .toList();
+     }
+ 
++    private Candidate toCandidate(double workplaceLat, double workplaceLng, Restaurant restaurant) {
++        int distanceMeter = (int) distanceInMeter(
++                workplaceLat,
++                workplaceLng,
++                restaurant.getLatitude(),
++                restaurant.getLongitude()
++        );
++
++        double rating = Optional.ofNullable(restaurant.getRating()).orElse(0.0);
++        int ratingCount = Optional.ofNullable(restaurant.getRatingCount()).orElse(0);
++
++        // 단순 추천 점수: 평점(0~5) + 리뷰수 로그 가중 + 거리 패널티
++        // - 가까운 곳 + 평점 좋은 곳을 위로 올리기 위한 MVP용 룰 기반 점수
++        double popularity = Math.log10(1.0 + ratingCount); // 0,1,2...
++        double distancePenalty = Math.min(1.5, distanceMeter / 800.0); // 0~1.5 정도로 제한
++        double score = (rating * 1.2) + (popularity * 0.8) - (distancePenalty * 0.9);
++
++        return new Candidate(restaurant, distanceMeter, rating, ratingCount, score);
++    }
++
+     private double distanceInMeter(double lat1, double lon1, Double lat2, Double lon2) {
+         if (lat2 == null || lon2 == null) return Double.MAX_VALUE;
+ 
+@@ -48,5 +86,30 @@
+ 
+         return R * c;
+     }
++
++    public enum Sort {
++        DISTANCE,
++        RATING,
++        RECOMMEND;
++
++        public static Sort from(String sort) {
++            if (sort == null || sort.isBlank()) return RECOMMEND;
++            return switch (sort.trim().toLowerCase(Locale.ROOT)) {
++                case "distance" -> DISTANCE;
++                case "rating" -> RATING;
++                case "recommend", "score" -> RECOMMEND;
++                default -> RECOMMEND;
++            };
++        }
++    }
++
++    private record Candidate(
++            Restaurant restaurant,
++            int distanceMeter,
++            double rating,
++            int ratingCount,
++            double score
++    ) {
++    }
+ }
+ 
+Index: ../backend/src/main/java/com/jikgeunbap/restaurant/controller/RestaurantController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.jikgeunbap.restaurant.controller;\n\nimport com.jikgeunbap.restaurant.dto.RestaurantResponse;\nimport com.jikgeunbap.restaurant.service.RestaurantService;\nimport lombok.RequiredArgsConstructor;\nimport org.springframework.web.bind.annotation.GetMapping;\nimport org.springframework.web.bind.annotation.RequestMapping;\nimport org.springframework.web.bind.annotation.RequestParam;\nimport org.springframework.web.bind.annotation.RestController;\n\nimport java.util.List;\n\n@RestController\n@RequestMapping(\"/api/restaurants\")\n@RequiredArgsConstructor\npublic class RestaurantController {\n\n    private final RestaurantService restaurantService;\n\n    @GetMapping(\"/nearby\")\n    public List<RestaurantResponse> getNearby(\n            @RequestParam double lat,\n            @RequestParam double lng,\n            @RequestParam(defaultValue = \"500\") int radius\n    ) {\n        return restaurantService.getNearby(lat, lng, radius);\n    }\n}\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../backend/src/main/java/com/jikgeunbap/restaurant/controller/RestaurantController.java b/../backend/src/main/java/com/jikgeunbap/restaurant/controller/RestaurantController.java
+--- a/../backend/src/main/java/com/jikgeunbap/restaurant/controller/RestaurantController.java	(revision 7ae0f7892ddaae5d924b664e8248e8db8fee2fd8)
++++ b/../backend/src/main/java/com/jikgeunbap/restaurant/controller/RestaurantController.java	(date 1773666748173)
+@@ -2,6 +2,7 @@
+ 
+ import com.jikgeunbap.restaurant.dto.RestaurantResponse;
+ import com.jikgeunbap.restaurant.service.RestaurantService;
++import com.jikgeunbap.restaurant.service.RestaurantService.Sort;
+ import lombok.RequiredArgsConstructor;
+ import org.springframework.web.bind.annotation.GetMapping;
+ import org.springframework.web.bind.annotation.RequestMapping;
+@@ -21,9 +22,11 @@
+     public List<RestaurantResponse> getNearby(
+             @RequestParam double lat,
+             @RequestParam double lng,
+-            @RequestParam(defaultValue = "500") int radius
++            @RequestParam(defaultValue = "500") int radius,
++            @RequestParam(required = false) String category,
++            @RequestParam(defaultValue = "recommend") String sort
+     ) {
+-        return restaurantService.getNearby(lat, lng, radius);
++        return restaurantService.getNearby(lat, lng, radius, category, Sort.from(sort));
+     }
+ }
+ 
+Index: ../backend/build/reports/tests/test/index.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\n<html>\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n<meta http-equiv=\"x-ua-compatible\" content=\"IE=edge\"/>\n<title>Test results - Test Summary</title>\n<link href=\"css/base-style.css\" rel=\"stylesheet\" type=\"text/css\"/>\n<link href=\"css/style.css\" rel=\"stylesheet\" type=\"text/css\"/>\n<script src=\"js/report.js\" type=\"text/javascript\"></script>\n</head>\n<body>\n<div id=\"content\">\n<h1>Test Summary</h1>\n<div id=\"summary\">\n<table>\n<tr>\n<td>\n<div class=\"summaryGroup\">\n<table>\n<tr>\n<td>\n<div class=\"infoBox\" id=\"tests\">\n<div class=\"counter\">1</div>\n<p>tests</p>\n</div>\n</td>\n<td>\n<div class=\"infoBox\" id=\"failures\">\n<div class=\"counter\">0</div>\n<p>failures</p>\n</div>\n</td>\n<td>\n<div class=\"infoBox\" id=\"ignored\">\n<div class=\"counter\">0</div>\n<p>ignored</p>\n</div>\n</td>\n<td>\n<div class=\"infoBox\" id=\"duration\">\n<div class=\"counter\">0.386s</div>\n<p>duration</p>\n</div>\n</td>\n</tr>\n</table>\n</div>\n</td>\n<td>\n<div class=\"infoBox success\" id=\"successRate\">\n<div class=\"percent\">100%</div>\n<p>successful</p>\n</div>\n</td>\n</tr>\n</table>\n</div>\n<div id=\"tabs\">\n<ul class=\"tabLinks\">\n<li>\n<a href=\"#tab0\">Packages</a>\n</li>\n<li>\n<a href=\"#tab1\">Classes</a>\n</li>\n</ul>\n<div id=\"tab0\" class=\"tab\">\n<h2>Packages</h2>\n<table>\n<thead>\n<tr>\n<th>Package</th>\n<th>Tests</th>\n<th>Failures</th>\n<th>Ignored</th>\n<th>Duration</th>\n<th>Success rate</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td class=\"success\">\n<a href=\"packages/com.jikgeunbap.demo.html\">com.jikgeunbap.demo</a>\n</td>\n<td>1</td>\n<td>0</td>\n<td>0</td>\n<td>0.386s</td>\n<td class=\"success\">100%</td>\n</tr>\n</tbody>\n</table>\n</div>\n<div id=\"tab1\" class=\"tab\">\n<h2>Classes</h2>\n<table>\n<thead>\n<tr>\n<th>Class</th>\n<th>Tests</th>\n<th>Failures</th>\n<th>Ignored</th>\n<th>Duration</th>\n<th>Success rate</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td class=\"success\">\n<a href=\"classes/com.jikgeunbap.demo.JikgeunbapServerApplicationTests.html\">com.jikgeunbap.demo.JikgeunbapServerApplicationTests</a>\n</td>\n<td>1</td>\n<td>0</td>\n<td>0</td>\n<td>0.386s</td>\n<td class=\"success\">100%</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>\n<div id=\"footer\">\n<p>\n<div>\n<label class=\"hidden\" id=\"label-for-line-wrapping-toggle\" for=\"line-wrapping-toggle\">Wrap lines\n<input id=\"line-wrapping-toggle\" type=\"checkbox\" autocomplete=\"off\"/>\n</label>\n</div>Generated by \n<a href=\"http://www.gradle.org\">Gradle 8.5</a> at Mar 13, 2026, 9:28:07 PM</p>\n</div>\n</div>\n</body>\n</html>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../backend/build/reports/tests/test/index.html b/../backend/build/reports/tests/test/index.html
+--- a/../backend/build/reports/tests/test/index.html	(revision 7ae0f7892ddaae5d924b664e8248e8db8fee2fd8)
++++ b/../backend/build/reports/tests/test/index.html	(date 1773666928413)
+@@ -38,7 +38,7 @@
+ </td>
+ <td>
+ <div class="infoBox" id="duration">
+-<div class="counter">0.386s</div>
++<div class="counter">1.116s</div>
+ <p>duration</p>
+ </div>
+ </td>
+@@ -85,7 +85,7 @@
+ <td>1</td>
+ <td>0</td>
+ <td>0</td>
+-<td>0.386s</td>
++<td>1.116s</td>
+ <td class="success">100%</td>
+ </tr>
+ </tbody>
+@@ -112,7 +112,7 @@
+ <td>1</td>
+ <td>0</td>
+ <td>0</td>
+-<td>0.386s</td>
++<td>1.116s</td>
+ <td class="success">100%</td>
+ </tr>
+ </tbody>
+@@ -126,7 +126,7 @@
+ <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+ </label>
+ </div>Generated by 
+-<a href="http://www.gradle.org">Gradle 8.5</a> at Mar 13, 2026, 9:28:07 PM</p>
++<a href="http://www.gradle.org">Gradle 8.5</a> at Mar 16, 2026, 10:15:28 PM</p>
+ </div>
+ </div>
+ </body>
+Index: domain/src/main/java/com/example/jikgeunbap/domain/domain/usecase/GetRandomLunchRestaurantUseCase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.jikgeunbap.domain.domain.usecase\n\nimport com.example.jikgeunbap.domain.domain.model.Restaurant\nimport com.example.jikgeunbap.domain.domain.repository.RestaurantRepository\nimport javax.inject.Inject\n\nclass GetRandomLunchRestaurantUseCase @Inject constructor(\n    private val repository: RestaurantRepository // 만약 레포지토리가 있다면 여기에 포함\n) {\n    operator fun invoke(): Restaurant? {\n        val list = repository.getRestaurants()\n        return if (list.isNotEmpty()) list.random() else null\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/domain/src/main/java/com/example/jikgeunbap/domain/domain/usecase/GetRandomLunchRestaurantUseCase.kt b/domain/src/main/java/com/example/jikgeunbap/domain/domain/usecase/GetRandomLunchRestaurantUseCase.kt
+--- a/domain/src/main/java/com/example/jikgeunbap/domain/domain/usecase/GetRandomLunchRestaurantUseCase.kt	(revision 7ae0f7892ddaae5d924b664e8248e8db8fee2fd8)
++++ b/domain/src/main/java/com/example/jikgeunbap/domain/domain/usecase/GetRandomLunchRestaurantUseCase.kt	(date 1773668288583)
+@@ -7,7 +7,7 @@
+ class GetRandomLunchRestaurantUseCase @Inject constructor(
+     private val repository: RestaurantRepository // 만약 레포지토리가 있다면 여기에 포함
+ ) {
+-    operator fun invoke(): Restaurant? {
++    suspend operator fun invoke(): Restaurant? {
+         val list = repository.getRestaurants()
+         return if (list.isNotEmpty()) list.random() else null
+     }
+Index: domain/src/main/java/com/example/jikgeunbap/domain/domain/repository/RestaurantRepository.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.jikgeunbap.domain.domain.repository\n\nimport com.example.jikgeunbap.domain.domain.model.Restaurant\n\ninterface RestaurantRepository {\n    fun getRestaurants(): List<Restaurant>\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/domain/src/main/java/com/example/jikgeunbap/domain/domain/repository/RestaurantRepository.kt b/domain/src/main/java/com/example/jikgeunbap/domain/domain/repository/RestaurantRepository.kt
+--- a/domain/src/main/java/com/example/jikgeunbap/domain/domain/repository/RestaurantRepository.kt	(revision 7ae0f7892ddaae5d924b664e8248e8db8fee2fd8)
++++ b/domain/src/main/java/com/example/jikgeunbap/domain/domain/repository/RestaurantRepository.kt	(date 1773668285212)
+@@ -3,5 +3,5 @@
+ import com.example.jikgeunbap.domain.domain.model.Restaurant
+ 
+ interface RestaurantRepository {
+-    fun getRestaurants(): List<Restaurant>
++    suspend fun getRestaurants(): List<Restaurant>
+ }
+Index: ../backend/src/main/java/com/jikgeunbap/common/config/CorsConfig.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../backend/src/main/java/com/jikgeunbap/common/config/CorsConfig.java b/../backend/src/main/java/com/jikgeunbap/common/config/CorsConfig.java
+new file mode 100644
+--- /dev/null	(date 1773666752423)
++++ b/../backend/src/main/java/com/jikgeunbap/common/config/CorsConfig.java	(date 1773666752423)
+@@ -0,0 +1,23 @@
++package com.jikgeunbap.common.config;
++
++import org.springframework.context.annotation.Configuration;
++import org.springframework.web.servlet.config.annotation.CorsRegistry;
++import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
++
++@Configuration
++public class CorsConfig implements WebMvcConfigurer {
++
++    @Override
++    public void addCorsMappings(CorsRegistry registry) {
++        registry.addMapping("/api/**")
++                .allowedOrigins(
++                        "http://localhost",
++                        "http://10.0.2.2",
++                        "http://127.0.0.1"
++                )
++                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
++                .allowedHeaders("*")
++                .allowCredentials(false);
++    }
++}
++
+Index: ../backend/build/test-results/test/TEST-com.jikgeunbap.demo.JikgeunbapServerApplicationTests.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<testsuite name=\"com.jikgeunbap.demo.JikgeunbapServerApplicationTests\" tests=\"1\" skipped=\"0\" failures=\"0\" errors=\"0\" timestamp=\"2026-03-13T12:28:07\" hostname=\"iyugeon-ui-MacBookAir.local\" time=\"0.386\">\n  <properties/>\n  <testcase name=\"contextLoads()\" classname=\"com.jikgeunbap.demo.JikgeunbapServerApplicationTests\" time=\"0.386\"/>\n  <system-out><![CDATA[21:28:05.555 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.jikgeunbap.demo.JikgeunbapServerApplicationTests]: JikgeunbapServerApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.\n21:28:05.598 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.jikgeunbap.JikgeunbapServerApplication for test class com.jikgeunbap.demo.JikgeunbapServerApplicationTests\n\n  .   ____          _            __ _ _\n /\\\\ / ___'_ __ _ _(_)_ __  __ _ \\ \\ \\ \\\n( ( )\\___ | '_ | '_| | '_ \\/ _` | \\ \\ \\ \\\n \\\\/  ___)| |_)| | | | | || (_| |  ) ) ) )\n  '  |____| .__|_| |_|_| |_\\__, | / / / /\n =========|_|==============|___/=/_/_/_/\n :: Spring Boot ::                (v3.2.3)\n\n2026-03-13T21:28:05.762+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : Starting JikgeunbapServerApplicationTests using Java 17.0.9 with PID 8798 (started by leeugun123 in /Users/leeugun123/Desktop/project/JikGeunBap/backend)\n2026-03-13T21:28:05.764+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : No active profile set, falling back to 1 default profile: \"default\"\n2026-03-13T21:28:06.021+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.\n2026-03-13T21:28:06.040+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 16 ms. Found 1 JPA repository interface.\n2026-03-13T21:28:06.198+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]\n2026-03-13T21:28:06.220+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final\n2026-03-13T21:28:06.232+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled\n2026-03-13T21:28:06.318+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer\n2026-03-13T21:28:06.330+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...\n2026-03-13T21:28:06.414+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:jikgeunbapdb user=SA\n2026-03-13T21:28:06.415+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.\n2026-03-13T21:28:06.748+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)\nHibernate: \n    drop table if exists restaurants cascade \nHibernate: \n    create table restaurants (\n        latitude float(53),\n        longitude float(53),\n        rating float(53),\n        rating_count integer,\n        id bigint generated by default as identity,\n        category varchar(255),\n        name varchar(255),\n        tags varchar(255),\n        primary key (id)\n    )\n2026-03-13T21:28:06.763+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'\n2026-03-13T21:28:07.059+09:00  WARN 8798 --- [jikgeunbap-server] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning\n2026-03-13T21:28:07.239+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:jikgeunbapdb'\n2026-03-13T21:28:07.299+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : Started JikgeunbapServerApplicationTests in 1.608 seconds (process running for 2.139)\nHibernate: \n    select\n        count(*) \n    from\n        restaurants r1_0\nHibernate: \n    insert \n    into\n        restaurants\n        (category, latitude, longitude, name, rating, rating_count, tags, id) \n    values\n        (?, ?, ?, ?, ?, ?, ?, default)\nHibernate: \n    insert \n    into\n        restaurants\n        (category, latitude, longitude, name, rating, rating_count, tags, id) \n    values\n        (?, ?, ?, ?, ?, ?, ?, default)\nHibernate: \n    insert \n    into\n        restaurants\n        (category, latitude, longitude, name, rating, rating_count, tags, id) \n    values\n        (?, ?, ?, ?, ?, ?, ?, default)\nHibernate: \n    insert \n    into\n        restaurants\n        (category, latitude, longitude, name, rating, rating_count, tags, id) \n    values\n        (?, ?, ?, ?, ?, ?, ?, default)\n]]></system-out>\n  <system-err><![CDATA[]]></system-err>\n</testsuite>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../backend/build/test-results/test/TEST-com.jikgeunbap.demo.JikgeunbapServerApplicationTests.xml b/../backend/build/test-results/test/TEST-com.jikgeunbap.demo.JikgeunbapServerApplicationTests.xml
+--- a/../backend/build/test-results/test/TEST-com.jikgeunbap.demo.JikgeunbapServerApplicationTests.xml	(revision 7ae0f7892ddaae5d924b664e8248e8db8fee2fd8)
++++ b/../backend/build/test-results/test/TEST-com.jikgeunbap.demo.JikgeunbapServerApplicationTests.xml	(date 1773666928377)
+@@ -1,9 +1,9 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+-<testsuite name="com.jikgeunbap.demo.JikgeunbapServerApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-03-13T12:28:07" hostname="iyugeon-ui-MacBookAir.local" time="0.386">
++<testsuite name="com.jikgeunbap.demo.JikgeunbapServerApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-03-16T13:15:27" hostname="iyugeon-ui-MacBookAir.local" time="1.116">
+   <properties/>
+-  <testcase name="contextLoads()" classname="com.jikgeunbap.demo.JikgeunbapServerApplicationTests" time="0.386"/>
+-  <system-out><![CDATA[21:28:05.555 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.jikgeunbap.demo.JikgeunbapServerApplicationTests]: JikgeunbapServerApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+-21:28:05.598 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.jikgeunbap.JikgeunbapServerApplication for test class com.jikgeunbap.demo.JikgeunbapServerApplicationTests
++  <testcase name="contextLoads()" classname="com.jikgeunbap.demo.JikgeunbapServerApplicationTests" time="1.116"/>
++  <system-out><![CDATA[22:15:20.188 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.jikgeunbap.demo.JikgeunbapServerApplicationTests]: JikgeunbapServerApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
++22:15:20.483 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.jikgeunbap.JikgeunbapServerApplication for test class com.jikgeunbap.demo.JikgeunbapServerApplicationTests
+ 
+   .   ____          _            __ _ _
+  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+@@ -13,18 +13,18 @@
+  =========|_|==============|___/=/_/_/_/
+  :: Spring Boot ::                (v3.2.3)
+ 
+-2026-03-13T21:28:05.762+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : Starting JikgeunbapServerApplicationTests using Java 17.0.9 with PID 8798 (started by leeugun123 in /Users/leeugun123/Desktop/project/JikGeunBap/backend)
+-2026-03-13T21:28:05.764+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : No active profile set, falling back to 1 default profile: "default"
+-2026-03-13T21:28:06.021+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+-2026-03-13T21:28:06.040+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 16 ms. Found 1 JPA repository interface.
+-2026-03-13T21:28:06.198+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+-2026-03-13T21:28:06.220+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+-2026-03-13T21:28:06.232+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+-2026-03-13T21:28:06.318+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+-2026-03-13T21:28:06.330+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+-2026-03-13T21:28:06.414+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:jikgeunbapdb user=SA
+-2026-03-13T21:28:06.415+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+-2026-03-13T21:28:06.748+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
++2026-03-16T22:15:21.462+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : Starting JikgeunbapServerApplicationTests using Java 17.0.9 with PID 3261 (started by leeugun123 in /Users/leeugun123/Desktop/project/JikGeunBap/backend)
++2026-03-16T22:15:21.465+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : No active profile set, falling back to 1 default profile: "default"
++2026-03-16T22:15:22.583+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
++2026-03-16T22:15:22.663+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 72 ms. Found 1 JPA repository interface.
++2026-03-16T22:15:23.426+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
++2026-03-16T22:15:23.513+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
++2026-03-16T22:15:23.573+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
++2026-03-16T22:15:24.010+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
++2026-03-16T22:15:24.047+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
++2026-03-16T22:15:24.314+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:jikgeunbapdb user=SA
++2026-03-16T22:15:24.315+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
++2026-03-16T22:15:25.346+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+ Hibernate: 
+     drop table if exists restaurants cascade 
+ Hibernate: 
+@@ -39,10 +39,10 @@
+         tags varchar(255),
+         primary key (id)
+     )
+-2026-03-13T21:28:06.763+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+-2026-03-13T21:28:07.059+09:00  WARN 8798 --- [jikgeunbap-server] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+-2026-03-13T21:28:07.239+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:jikgeunbapdb'
+-2026-03-13T21:28:07.299+09:00  INFO 8798 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : Started JikgeunbapServerApplicationTests in 1.608 seconds (process running for 2.139)
++2026-03-16T22:15:25.374+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
++2026-03-16T22:15:25.771+09:00  WARN 3261 --- [jikgeunbap-server] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
++2026-03-16T22:15:26.298+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:jikgeunbapdb'
++2026-03-16T22:15:26.457+09:00  INFO 3261 --- [jikgeunbap-server] [    Test worker] c.j.d.JikgeunbapServerApplicationTests   : Started JikgeunbapServerApplicationTests in 5.492 seconds (process running for 9.876)
+ Hibernate: 
+     select
+         count(*) 
+Index: data/build.gradle.kts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\n    id(\"com.android.library\")\n    alias(libs.plugins.jetbrains.kotlin.android)\n}\n\nandroid {\n    namespace = \"com.example.jikgeunbap.data\"\n    compileSdk = 35\n\n    defaultConfig {\n        minSdk = 34\n        targetSdk = 35\n        testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\"\n    }\n\n    buildTypes {\n        release {\n            isMinifyEnabled = false\n            proguardFiles(\n                getDefaultProguardFile(\"proguard-android-optimize.txt\"),\n                \"proguard-rules.pro\"\n            )\n        }\n    }\n    compileOptions {\n        sourceCompatibility = JavaVersion.VERSION_11\n        targetCompatibility = JavaVersion.VERSION_11\n    }\n    kotlinOptions {\n        jvmTarget = \"11\"\n    }\n}\n\ndependencies {\n    implementation(project(\":domain\"))\n    implementation(libs.androidx.core.ktx)\n    implementation(libs.androidx.appcompat)\n    implementation(libs.material)\n    testImplementation(libs.junit)\n    androidTestImplementation(libs.androidx.junit)\n    androidTestImplementation(libs.androidx.espresso.core)\n    implementation(libs.hilt.android)\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/data/build.gradle.kts b/data/build.gradle.kts
+--- a/data/build.gradle.kts	(revision 7ae0f7892ddaae5d924b664e8248e8db8fee2fd8)
++++ b/data/build.gradle.kts	(date 1773668250643)
+@@ -36,6 +36,9 @@
+     implementation(libs.androidx.core.ktx)
+     implementation(libs.androidx.appcompat)
+     implementation(libs.material)
++    implementation("com.squareup.retrofit2:retrofit:2.11.0")
++    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
++    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+     testImplementation(libs.junit)
+     androidTestImplementation(libs.androidx.junit)
+     androidTestImplementation(libs.androidx.espresso.core)

@@ -2,6 +2,7 @@ package com.jikgeunbap.restaurant.controller;
 
 import com.jikgeunbap.restaurant.dto.RestaurantResponse;
 import com.jikgeunbap.restaurant.service.RestaurantService;
+import com.jikgeunbap.restaurant.service.RestaurantService.Sort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,9 +22,11 @@ public class RestaurantController {
     public List<RestaurantResponse> getNearby(
             @RequestParam double lat,
             @RequestParam double lng,
-            @RequestParam(defaultValue = "500") int radius
+            @RequestParam(defaultValue = "500") int radius,
+            @RequestParam(required = false) String category,
+            @RequestParam(defaultValue = "recommend") String sort
     ) {
-        return restaurantService.getNearby(lat, lng, radius);
+        return restaurantService.getNearby(lat, lng, radius, category, Sort.from(sort));
     }
 }
 
