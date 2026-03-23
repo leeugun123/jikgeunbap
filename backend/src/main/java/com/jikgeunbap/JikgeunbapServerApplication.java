@@ -22,7 +22,7 @@ public class JikgeunbapServerApplication {
 			}
 
 			restaurantRepository.save(Restaurant.builder()
-					.name("김밥천국")
+					.name("엽기떡볶이")
 					.category("한식")
 					.latitude(37.5665)
 					.longitude(126.9780)
@@ -32,7 +32,7 @@ public class JikgeunbapServerApplication {
 					.build());
 
 			restaurantRepository.save(Restaurant.builder()
-					.name("파스타카페")
+					.name("파스타")
 					.category("양식")
 					.latitude(37.5667)
 					.longitude(126.9775)
