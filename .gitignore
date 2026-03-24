@@ -1,9 +1,9 @@
 # Root .gitignore 예시
 
 ### Android ###
-android/.gradle/
-android/build/
-android/local.properties
+app-android/.gradle/
+app-android/build/
+app-android/local.properties
 
 ### Backend ###
 backend/.gradle/
