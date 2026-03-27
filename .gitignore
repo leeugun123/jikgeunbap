@@ -1,12 +1,34 @@
-# Root .gitignore 예시
+### macOS ###
+.DS_Store
+
+### IntelliJ / Android Studio ###
+.idea/
+*.iml
+*.iws
+out/
+
+### Gradle ###
+.gradle/
+**/.gradle/
+**/build/
+**/out/
+**/target/
 
 ### Android ###
-app-android/.gradle/
-app-android/build/
-app-android/local.properties
+**/local.properties
+**/*.apk
+**/*.aab
+captures/
+.externalNativeBuild/
+.cxx/
 
-### Backend ###
-backend/.gradle/
+### Logs ###
+*.log
+
+### Secrets (안 넣는 게 안전) ###
+*.jks
+*.keystore
+
+### Spring Boot ###
 backend/build/
-backend/out/
-backend/target/
+backend/.gradle/
