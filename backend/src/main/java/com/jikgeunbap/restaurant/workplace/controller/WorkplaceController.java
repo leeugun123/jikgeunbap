@@ -1,8 +1,8 @@
-package com.jikgeunbap.workplace.controller;
+package com.jikgeunbap.restaurant.workplace.controller;
 
-import com.jikgeunbap.workplace.dto.WorkplaceRequest;
-import com.jikgeunbap.workplace.dto.WorkplaceResponse;
-import com.jikgeunbap.workplace.service.WorkplaceService;
+import com.jikgeunbap.restaurant.workplace.dto.WorkplaceRequest;
+import com.jikgeunbap.restaurant.workplace.dto.WorkplaceResponse;
+import com.jikgeunbap.restaurant.workplace.service.WorkplaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;

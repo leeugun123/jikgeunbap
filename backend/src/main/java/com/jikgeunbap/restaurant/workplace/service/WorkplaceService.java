@@ -1,9 +1,9 @@
-package com.jikgeunbap.workplace.service;
+package com.jikgeunbap.restaurant.workplace.service;
 
-import com.jikgeunbap.workplace.dto.WorkplaceRequest;
-import com.jikgeunbap.workplace.dto.WorkplaceResponse;
-import com.jikgeunbap.workplace.entity.WorkplaceSetting;
-import com.jikgeunbap.workplace.repository.WorkplaceSettingRepository;
+import com.jikgeunbap.restaurant.workplace.entity.WorkplaceSetting;
+import com.jikgeunbap.restaurant.workplace.dto.WorkplaceRequest;
+import com.jikgeunbap.restaurant.workplace.dto.WorkplaceResponse;
+import com.jikgeunbap.restaurant.workplace.repository.WorkplaceSettingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

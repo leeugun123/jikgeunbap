@@ -1,4 +1,4 @@
-package com.jikgeunbap.workplace.entity;
+package com.jikgeunbap.restaurant.workplace.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
