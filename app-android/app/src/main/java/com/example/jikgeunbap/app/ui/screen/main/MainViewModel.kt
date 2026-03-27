@@ -17,9 +17,17 @@ class MainViewModel @Inject constructor(
     private val _restaurant = MutableStateFlow<Restaurant?>(null)
     val restaurant: StateFlow<Restaurant?> = _restaurant
 
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error
+
     fun recommend() {
         viewModelScope.launch {
-            _restaurant.value = getRandomLunchRestaurantUseCase()
+            try {
+                _error.value = null
+                _restaurant.value = getRandomLunchRestaurantUseCase()
+            } catch (e: Exception) {
+                _error.value = e.message ?: "네트워크 오류"
+            }
         }
     }
 }

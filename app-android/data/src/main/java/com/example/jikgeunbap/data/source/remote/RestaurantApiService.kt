@@ -13,5 +13,11 @@ interface RestaurantApiService {
         @Query("category") category: String? = null,
         @Query("sort") sort: String = "recommend"
     ): List<RestaurantDto>
+
+    @GET("api/workplace")
+    suspend fun getWorkplace(): WorkplaceDto
+
+    @retrofit2.http.PUT("api/workplace")
+    suspend fun setWorkplace(@retrofit2.http.Body body: WorkplaceDto): WorkplaceDto
 }
 

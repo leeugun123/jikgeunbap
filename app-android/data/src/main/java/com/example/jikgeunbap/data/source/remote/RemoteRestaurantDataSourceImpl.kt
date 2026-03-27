@@ -9,13 +9,15 @@ class RemoteRestaurantDataSourceImpl @Inject constructor(
 ) : RemoteRestaurantDataSource {
 
     override suspend fun fetchRestaurants(): List<Restaurant> {
-        // TODO: 회사 위치는 이후에 유저 설정/저장 값으로 대체
-        val workplaceLat = 37.5665
-        val workplaceLng = 126.9780
+        val workplace = apiService.getWorkplace()
 
         return apiService
-            .getNearbyRestaurants(lat = workplaceLat, lng = workplaceLng)
+            .getNearbyRestaurants(lat = workplace.lat, lng = workplace.lng)
             .map { it.toDomain() }
+    }
+
+    suspend fun setWorkplace(lat: Double, lng: Double) {
+        apiService.setWorkplace(WorkplaceDto(lat = lat, lng = lng))
     }
 }
 

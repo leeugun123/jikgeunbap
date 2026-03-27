@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -31,9 +32,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
+    onOpenWorkplace: () -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val restaurant = viewModel.restaurant.collectAsState().value
+    val error = viewModel.error.collectAsState().value
 
     Box(
         modifier = modifier
@@ -133,12 +136,22 @@ fun MainScreen(
                     Text("🎲", fontSize = 21.sp)
                     Spacer(modifier = Modifier.width(7.dp))
                     Text(
-                        "주사위 굴리기",
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 17.sp
-                    )
-                }
+                    "주사위 굴리기",
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 17.sp
+                )
+            }
+        }
+
+        if (error != null) {
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(text = error, color = Color(0xFFCC3344), fontSize = 12.sp)
+            }
+
+            Spacer(modifier = Modifier.height(18.dp))
+            Button(onClick = onOpenWorkplace) {
+                Text("직장 위치 설정")
             }
         }
     }
