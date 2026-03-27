@@ -1,4 +1,4 @@
-package com.example.jikgeunbap.app.ui.screen.workplace
+package com.example.jikgeunbap.app.ui.presentation.workplace
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

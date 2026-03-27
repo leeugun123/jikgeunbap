@@ -7,11 +7,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.example.jikgeunbap.app.ui.screen.main.MainScreen
-import com.example.jikgeunbap.app.ui.screen.workplace.WorkplaceScreen
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.jikgeunbap.app.ui.Screen
+import com.example.jikgeunbap.app.ui.presentation.main.MainScreen
+import com.example.jikgeunbap.app.ui.presentation.workplace.WorkplaceScreen
 import com.example.jikgeunbap.app.ui.theme.JikGeunBapTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,22 +24,34 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             JikGeunBapTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    val screen = remember { mutableStateOf("main") }
+                val navController = rememberNavController()
 
-                    when (screen.value) {
-                        "workplace" -> WorkplaceScreen(
-                            modifier = Modifier.padding(innerPadding),
-                            onBack = { screen.value = "main" }
-                        )
-                        else -> MainScreen(
-                            modifier = Modifier.padding(innerPadding),
-                            onOpenWorkplace = { screen.value = "workplace" }
-                        )
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screen.Main.route,
+                        modifier = Modifier.padding(innerPadding)
+                    ) {
+                        // 메인 화면
+                        composable(route = Screen.Main.route) {
+                            MainScreen(
+                                onOpenWorkplace = {
+                                    navController.navigate(Screen.Workplace.route)
+                                }
+                            )
+                        }
+
+                        // 작업장 화면
+                        composable(route = Screen.Workplace.route) {
+                            WorkplaceScreen(
+                                onBack = {
+                                    navController.popBackStack()
+                                }
+                            )
+                        }
                     }
                 }
             }
         }
     }
 }
-
