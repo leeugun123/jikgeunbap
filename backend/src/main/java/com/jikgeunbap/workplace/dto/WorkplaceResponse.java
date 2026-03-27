@@ -1,4 +1,4 @@
-package com.jikgeunbap.restaurant.workplace.dto;
+package com.jikgeunbap.workplace.dto;
 
 public record WorkplaceResponse(
         double lat,
