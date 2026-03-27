@@ -1,8 +1,8 @@
 package com.example.jikgeunbap.data.repository
 
 import com.example.jikgeunbap.data.source.RemoteRestaurantDataSource
-import com.example.jikgeunbap.domain.domain.repository.RestaurantRepository
-import com.example.jikgeunbap.domain.domain.model.Restaurant
+import com.example.jikgeunbap.domain.repository.RestaurantRepository
+import com.example.jikgeunbap.domain.model.Restaurant
 import javax.inject.Inject
 
 

@@ -1,6 +1,6 @@
 package com.example.jikgeunbap.data.source.remote
 
-import com.example.jikgeunbap.domain.domain.model.Restaurant
+import com.example.jikgeunbap.domain.model.Restaurant
 
 data class RestaurantDto(
     val id: Long,

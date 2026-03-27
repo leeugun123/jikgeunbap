@@ -1,4 +1,4 @@
-package com.example.jikgeunbap.domain.domain.model
+package com.example.jikgeunbap.domain.model
 
 data class Restaurant(
     val id: Long,
@@ -8,3 +8,4 @@ data class Restaurant(
     val imageUrl: String? = null,
     val tags: List<String> = emptyList()
 )
+

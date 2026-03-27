@@ -4,8 +4,8 @@ import com.example.jikgeunbap.data.repository.RestaurantRepositoryImpl
 import com.example.jikgeunbap.data.source.RemoteRestaurantDataSource
 import com.example.jikgeunbap.data.source.remote.RemoteRestaurantDataSourceImpl
 import com.example.jikgeunbap.data.source.remote.RestaurantApiService
-import com.example.jikgeunbap.domain.domain.repository.RestaurantRepository
-import com.example.jikgeunbap.domain.domain.usecase.GetRandomLunchRestaurantUseCase
+import com.example.jikgeunbap.domain.repository.RestaurantRepository
+import com.example.jikgeunbap.domain.usecase.GetRandomLunchRestaurantUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

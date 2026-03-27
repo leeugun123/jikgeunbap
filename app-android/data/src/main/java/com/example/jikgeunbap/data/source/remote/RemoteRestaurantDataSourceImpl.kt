@@ -1,7 +1,7 @@
 package com.example.jikgeunbap.data.source.remote
 
 import com.example.jikgeunbap.data.source.RemoteRestaurantDataSource
-import com.example.jikgeunbap.domain.domain.model.Restaurant
+import com.example.jikgeunbap.domain.model.Restaurant
 import javax.inject.Inject
 
 class RemoteRestaurantDataSourceImpl @Inject constructor(
