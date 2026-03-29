@@ -2,8 +2,9 @@ package com.example.jikgeunbap.app.presentation.ui.workplace
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.jikgeunbap.data.source.remote.RestaurantApiService
-import com.example.jikgeunbap.data.source.remote.WorkplaceDto
+import com.example.jikgeunbap.domain.model.Workplace
+import com.example.jikgeunbap.domain.usecase.GetWorkplaceUseCase
+import com.example.jikgeunbap.domain.usecase.SetWorkplaceUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WorkplaceViewModel @Inject constructor(
-    private val apiService: RestaurantApiService
+    private val getWorkplaceUseCase: GetWorkplaceUseCase,
+    private val setWorkplaceUseCase: SetWorkplaceUseCase
 ) : ViewModel() {
 
     private val _lat = MutableStateFlow("")
@@ -34,7 +36,7 @@ class WorkplaceViewModel @Inject constructor(
 
     fun load() {
         viewModelScope.launch {
-            runCatching { apiService.getWorkplace() }
+            runCatching { getWorkplaceUseCase() }
                 .onSuccess {
                     _lat.value = it.lat.toString()
                     _lng.value = it.lng.toString()
@@ -54,7 +56,9 @@ class WorkplaceViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            runCatching { apiService.setWorkplace(WorkplaceDto(lat = latValue, lng = lngValue)) }
+            runCatching {
+                setWorkplaceUseCase(Workplace(lat = latValue, lng = lngValue))
+            }
                 .onSuccess {
                     _message.value = "저장 완료"
                 }

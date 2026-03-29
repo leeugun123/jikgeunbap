@@ -1,10 +1,12 @@
 package com.example.jikgeunbap.app.di
 
 import com.example.jikgeunbap.data.repository.RestaurantRepositoryImpl
+import com.example.jikgeunbap.data.repository.WorkplaceRepositoryImpl
 import com.example.jikgeunbap.data.source.RemoteRestaurantDataSource
 import com.example.jikgeunbap.data.source.remote.RemoteRestaurantDataSourceImpl
 import com.example.jikgeunbap.data.source.remote.RestaurantApiService
 import com.example.jikgeunbap.domain.repository.RestaurantRepository
+import com.example.jikgeunbap.domain.repository.WorkplaceRepository
 import com.example.jikgeunbap.domain.usecase.GetRandomLunchRestaurantUseCase
 import dagger.Module
 import dagger.Provides
@@ -48,9 +50,17 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRemoteRestaurantDataSource(
+    fun provideWorkplaceRepository(
         apiService: RestaurantApiService
-    ): RemoteRestaurantDataSource = RemoteRestaurantDataSourceImpl(apiService)
+    ): WorkplaceRepository = WorkplaceRepositoryImpl(apiService)
+
+    @Provides
+    @Singleton
+    fun provideRemoteRestaurantDataSource(
+        apiService: RestaurantApiService,
+        workplaceRepository: WorkplaceRepository
+    ): RemoteRestaurantDataSource =
+        RemoteRestaurantDataSourceImpl(apiService, workplaceRepository)
 
     @Provides
     @Singleton

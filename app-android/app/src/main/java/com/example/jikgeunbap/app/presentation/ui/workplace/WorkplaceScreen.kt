@@ -53,7 +53,6 @@ fun WorkplaceScreen(
             onValueChange = viewModel::onLngChange,
             label = { Text("경도(lng)") }
         )
-
         if (message != null) {
             Spacer(modifier = Modifier.height(12.dp))
             Text(message, color = Color(0xFFCC3344))
