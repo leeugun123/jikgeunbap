@@ -11,10 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.jikgeunbap.app.ui.Screen
-import com.example.jikgeunbap.app.ui.presentation.main.MainScreen
-import com.example.jikgeunbap.app.ui.presentation.workplace.WorkplaceScreen
-import com.example.jikgeunbap.app.ui.theme.JikGeunBapTheme
+import com.example.jikgeunbap.app.presentation.Screen
+import com.example.jikgeunbap.app.presentation.ui.main.MainScreen
+import com.example.jikgeunbap.app.presentation.ui.workplace.WorkplaceScreen
+import com.example.jikgeunbap.app.presentation.theme.JikGeunBapTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

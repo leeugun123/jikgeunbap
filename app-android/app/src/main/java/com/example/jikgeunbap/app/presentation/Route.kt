@@ -1,4 +1,4 @@
-package com.example.jikgeunbap.app.ui
+package com.example.jikgeunbap.app.presentation
 
 /**
  * 앱의 모든 화면 경로를 관리하는 Sealed Class입니다.

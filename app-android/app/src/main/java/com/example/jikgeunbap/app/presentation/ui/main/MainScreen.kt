@@ -1,4 +1,4 @@
-package com.example.jikgeunbap.app.ui.presentation.main
+package com.example.jikgeunbap.app.presentation.ui.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

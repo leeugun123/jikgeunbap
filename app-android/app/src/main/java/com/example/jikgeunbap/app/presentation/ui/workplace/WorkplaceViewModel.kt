@@ -1,4 +1,4 @@
-package com.example.jikgeunbap.app.ui.presentation.workplace
+package com.example.jikgeunbap.app.presentation.ui.workplace
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

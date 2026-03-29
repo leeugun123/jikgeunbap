@@ -1,4 +1,4 @@
-package com.example.jikgeunbap.app.ui.theme
+package com.example.jikgeunbap.app.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
