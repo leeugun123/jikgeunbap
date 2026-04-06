@@ -3,6 +3,7 @@ package com.example.jikgeunbap.app.presentation.ui.workplace
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jikgeunbap.domain.model.Workplace
+import com.example.jikgeunbap.domain.usecase.CompleteWorkplaceOnboardingUseCase
 import com.example.jikgeunbap.domain.usecase.GetWorkplaceUseCase
 import com.example.jikgeunbap.domain.usecase.SetWorkplaceUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,8 @@ import javax.inject.Inject
 @HiltViewModel
 class WorkplaceViewModel @Inject constructor(
     private val getWorkplaceUseCase: GetWorkplaceUseCase,
-    private val setWorkplaceUseCase: SetWorkplaceUseCase
+    private val setWorkplaceUseCase: SetWorkplaceUseCase,
+    private val completeWorkplaceOnboardingUseCase: CompleteWorkplaceOnboardingUseCase
 ) : ViewModel() {
 
     private val _lat = MutableStateFlow("")
@@ -25,6 +27,9 @@ class WorkplaceViewModel @Inject constructor(
 
     private val _message = MutableStateFlow<String?>(null)
     val message: StateFlow<String?> = _message
+
+    private val _saved = MutableStateFlow(false)
+    val saved: StateFlow<Boolean> = _saved
 
     fun onLatChange(value: String) {
         _lat.value = value
@@ -56,16 +61,19 @@ class WorkplaceViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            runCatching {
+            try {
                 setWorkplaceUseCase(Workplace(lat = latValue, lng = lngValue))
+                completeWorkplaceOnboardingUseCase()
+                _message.value = "저장 완료"
+                _saved.value = true
+            } catch (e: Exception) {
+                _message.value = e.message ?: "저장 실패"
             }
-                .onSuccess {
-                    _message.value = "저장 완료"
-                }
-                .onFailure {
-                    _message.value = it.message ?: "저장 실패"
-                }
         }
+    }
+
+    fun consumeSavedEvent() {
+        _saved.value = false
     }
 }
 

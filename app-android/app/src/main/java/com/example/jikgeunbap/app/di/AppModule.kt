@@ -2,9 +2,11 @@ package com.example.jikgeunbap.app.di
 
 import com.example.jikgeunbap.data.repository.RestaurantRepositoryImpl
 import com.example.jikgeunbap.data.repository.WorkplaceRepositoryImpl
+import com.example.jikgeunbap.data.repository.OnboardingRepositoryImpl
 import com.example.jikgeunbap.data.source.RemoteRestaurantDataSource
 import com.example.jikgeunbap.data.source.remote.RemoteRestaurantDataSourceImpl
 import com.example.jikgeunbap.data.source.remote.RestaurantApiService
+import com.example.jikgeunbap.domain.repository.OnboardingRepository
 import com.example.jikgeunbap.domain.repository.RestaurantRepository
 import com.example.jikgeunbap.domain.repository.WorkplaceRepository
 import com.example.jikgeunbap.domain.usecase.GetRandomLunchRestaurantUseCase
@@ -12,6 +14,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
+import android.content.Context
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -47,6 +51,12 @@ object AppModule {
     @Singleton
     fun provideRestaurantApiService(retrofit: Retrofit): RestaurantApiService =
         retrofit.create(RestaurantApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideOnboardingRepository(
+        @ApplicationContext context: Context
+    ): OnboardingRepository = OnboardingRepositoryImpl(context)
 
     @Provides
     @Singleton

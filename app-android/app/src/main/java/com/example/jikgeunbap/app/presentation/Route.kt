@@ -6,4 +6,5 @@ package com.example.jikgeunbap.app.presentation
 sealed class Screen(val route: String) {
     data object Main : Screen("main")
     data object Workplace : Screen("workplace")
+    data object WorkplaceOnboarding : Screen("workplace_onboarding")
 }

@@ -21,15 +21,24 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun WorkplaceScreen(
     modifier: Modifier = Modifier,
-    onBack: () -> Unit,
+    onBack: (() -> Unit)? = null,
+    onSaved: (() -> Unit)? = null,
     viewModel: WorkplaceViewModel = hiltViewModel()
 ) {
     val lat = viewModel.lat.collectAsState().value
     val lng = viewModel.lng.collectAsState().value
     val message = viewModel.message.collectAsState().value
+    val saved = viewModel.saved.collectAsState().value
 
     LaunchedEffect(Unit) {
         viewModel.load()
+    }
+
+    LaunchedEffect(saved) {
+        if (saved) {
+            onSaved?.invoke()
+            viewModel.consumeSavedEvent()
+        }
     }
 
     Column(
@@ -62,9 +71,11 @@ fun WorkplaceScreen(
         Button(onClick = viewModel::save) {
             Text("저장")
         }
-        Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = onBack) {
-            Text("뒤로")
+        if (onBack != null) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Button(onClick = onBack) {
+                Text("뒤로")
+            }
         }
     }
 }

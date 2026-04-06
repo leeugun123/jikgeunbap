@@ -7,10 +7,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
+import com.example.jikgeunbap.app.presentation.AppStartViewModel
 import com.example.jikgeunbap.app.presentation.Screen
 import com.example.jikgeunbap.app.presentation.ui.main.MainScreen
 import com.example.jikgeunbap.app.presentation.ui.workplace.WorkplaceScreen
@@ -24,30 +29,53 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             JikGeunBapTheme {
-                val navController = rememberNavController()
+                val appStartViewModel: AppStartViewModel = hiltViewModel()
+                val startRoute = appStartViewModel.startRoute.collectAsState().value
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    NavHost(
-                        navController = navController,
-                        startDestination = Screen.Main.route,
-                        modifier = Modifier.padding(innerPadding)
-                    ) {
-                        // 메인 화면
-                        composable(route = Screen.Main.route) {
-                            MainScreen(
-                                onOpenWorkplace = {
-                                    navController.navigate(Screen.Workplace.route)
-                                }
-                            )
-                        }
+                    if (startRoute == null) {
+                        Text(
+                            text = "로딩 중...",
+                            modifier = Modifier.padding(innerPadding)
+                        )
+                    } else {
+                        val navController = rememberNavController()
+                        NavHost(
+                            navController = navController,
+                            startDestination = startRoute,
+                            modifier = Modifier.padding(innerPadding)
+                        ) {
+                            composable(route = Screen.Main.route) {
+                                MainScreen(
+                                    onOpenWorkplace = {
+                                        navController.navigate(Screen.Workplace.route)
+                                    }
+                                )
+                            }
 
-                        // 작업장 화면
-                        composable(route = Screen.Workplace.route) {
-                            WorkplaceScreen(
-                                onBack = {
-                                    navController.popBackStack()
-                                }
-                            )
+                            composable(route = Screen.Workplace.route) {
+                                WorkplaceScreen(
+                                    onBack = { navController.popBackStack() },
+                                    onSaved = { navController.popBackStack() }
+                                )
+                            }
+
+                            composable(route = Screen.WorkplaceOnboarding.route) {
+                                WorkplaceScreen(
+                                    onBack = null,
+                                    onSaved = {
+                                        navController.navigate(
+                                            Screen.Main.route,
+                                            navOptions {
+                                                popUpTo(Screen.WorkplaceOnboarding.route) {
+                                                    inclusive = true
+                                                }
+                                                launchSingleTop = true
+                                            }
+                                        )
+                                    }
+                                )
+                            }
                         }
                     }
                 }
