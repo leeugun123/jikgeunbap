@@ -48,6 +48,14 @@ class WorkplaceViewModel @Inject constructor(
         _lng.value = value
     }
 
+    fun onMapPointSelected(lat: Double, lng: Double) {
+        _lat.value = lat.toString()
+        _lng.value = lng.toString()
+        if (_placeName.value.isBlank()) {
+            _placeName.value = "카카오맵 선택 위치"
+        }
+    }
+
     fun onPlaceNameChange(value: String) {
         _placeName.value = value
     }
