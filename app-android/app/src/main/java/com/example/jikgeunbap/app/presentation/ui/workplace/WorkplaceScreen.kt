@@ -27,6 +27,9 @@ fun WorkplaceScreen(
 ) {
     val lat = viewModel.lat.collectAsState().value
     val lng = viewModel.lng.collectAsState().value
+    val placeName = viewModel.placeName.collectAsState().value
+    val address = viewModel.address.collectAsState().value
+    val radiusMeter = viewModel.radiusMeter.collectAsState().value
     val message = viewModel.message.collectAsState().value
     val saved = viewModel.saved.collectAsState().value
 
@@ -52,6 +55,18 @@ fun WorkplaceScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
+            value = placeName,
+            onValueChange = viewModel::onPlaceNameChange,
+            label = { Text("장소명(예: 본사/지점)") }
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = address,
+            onValueChange = viewModel::onAddressChange,
+            label = { Text("주소(선택)") }
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
             value = lat,
             onValueChange = viewModel::onLatChange,
             label = { Text("위도(lat)") }
@@ -61,6 +76,12 @@ fun WorkplaceScreen(
             value = lng,
             onValueChange = viewModel::onLngChange,
             label = { Text("경도(lng)") }
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = radiusMeter,
+            onValueChange = viewModel::onRadiusChange,
+            label = { Text("추천 반경(m)") }
         )
         if (message != null) {
             Spacer(modifier = Modifier.height(12.dp))

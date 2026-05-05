@@ -16,9 +16,25 @@ class WorkplaceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setWorkplace(workplace: Workplace): Workplace {
-        val dto = apiService.setWorkplace(WorkplaceDto(lat = workplace.lat, lng = workplace.lng))
+        val dto = apiService.setWorkplace(
+            WorkplaceDto(
+                lat = workplace.lat,
+                lng = workplace.lng,
+                placeName = workplace.placeName,
+                address = workplace.address,
+                radiusMeter = workplace.radiusMeter,
+                mapProvider = workplace.mapProvider
+            )
+        )
         return dto.toDomain()
     }
 
-    private fun WorkplaceDto.toDomain() = Workplace(lat = lat, lng = lng)
+    private fun WorkplaceDto.toDomain() = Workplace(
+        lat = lat,
+        lng = lng,
+        placeName = placeName,
+        address = address,
+        radiusMeter = radiusMeter,
+        mapProvider = mapProvider
+    )
 }

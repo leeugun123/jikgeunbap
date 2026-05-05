@@ -20,5 +20,10 @@ public class WorkplaceSetting {
 
     private Double latitude;
     private Double longitude;
+
+    private String placeName;
+    private String address;
+    private Integer radiusMeter;
+    private String mapProvider;
 }
 

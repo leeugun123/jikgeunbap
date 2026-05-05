@@ -19,6 +19,15 @@ class WorkplaceViewModel @Inject constructor(
     private val completeWorkplaceOnboardingUseCase: CompleteWorkplaceOnboardingUseCase
 ) : ViewModel() {
 
+    private val _placeName = MutableStateFlow("")
+    val placeName: StateFlow<String> = _placeName
+
+    private val _address = MutableStateFlow("")
+    val address: StateFlow<String> = _address
+
+    private val _radiusMeter = MutableStateFlow("500")
+    val radiusMeter: StateFlow<String> = _radiusMeter
+
     private val _lat = MutableStateFlow("")
     val lat: StateFlow<String> = _lat
 
@@ -39,12 +48,27 @@ class WorkplaceViewModel @Inject constructor(
         _lng.value = value
     }
 
+    fun onPlaceNameChange(value: String) {
+        _placeName.value = value
+    }
+
+    fun onAddressChange(value: String) {
+        _address.value = value
+    }
+
+    fun onRadiusChange(value: String) {
+        _radiusMeter.value = value
+    }
+
     fun load() {
         viewModelScope.launch {
             runCatching { getWorkplaceUseCase() }
                 .onSuccess {
                     _lat.value = it.lat.toString()
                     _lng.value = it.lng.toString()
+                    _placeName.value = it.placeName
+                    _address.value = it.address
+                    _radiusMeter.value = it.radiusMeter.toString()
                 }
                 .onFailure {
                     _message.value = it.message ?: "직장 위치를 불러오지 못했습니다."
@@ -55,6 +79,7 @@ class WorkplaceViewModel @Inject constructor(
     fun save() {
         val latValue = _lat.value.toDoubleOrNull()
         val lngValue = _lng.value.toDoubleOrNull()
+        val radiusValue = _radiusMeter.value.toIntOrNull() ?: 500
         if (latValue == null || lngValue == null) {
             _message.value = "위도/경도를 숫자로 입력해 주세요."
             return
@@ -62,7 +87,16 @@ class WorkplaceViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                setWorkplaceUseCase(Workplace(lat = latValue, lng = lngValue))
+                setWorkplaceUseCase(
+                    Workplace(
+                        lat = latValue,
+                        lng = lngValue,
+                        placeName = _placeName.value.ifBlank { "내 직장" },
+                        address = _address.value.ifBlank { "주소 미입력" },
+                        radiusMeter = radiusValue,
+                        mapProvider = "kakao"
+                    )
+                )
                 completeWorkplaceOnboardingUseCase()
                 _message.value = "저장 완료"
                 _saved.value = true

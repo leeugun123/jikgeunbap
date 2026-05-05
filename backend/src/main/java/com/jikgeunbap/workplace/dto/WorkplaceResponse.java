@@ -2,7 +2,11 @@ package com.jikgeunbap.workplace.dto;
 
 public record WorkplaceResponse(
         double lat,
-        double lng
+        double lng,
+        String placeName,
+        String address,
+        int radiusMeter,
+        String mapProvider
 ) {
 }
 
