@@ -1,35 +1,23 @@
 package com.example.jikgeunbap.app.presentation.ui.workplace
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import com.kakao.vectormap.KakaoMapReadyCallback
-import com.kakao.vectormap.LatLng
-import com.kakao.vectormap.MapLifeCycleCallback
-import com.kakao.vectormap.MapView
+import com.example.jikgeunbap.app.presentation.ui.common.KakaoMapPicker
 
 @Composable
 fun WorkplaceScreen(
@@ -122,53 +110,5 @@ fun WorkplaceScreen(
     }
 }
 
-@SuppressLint("ViewConstructor")
-@Composable
-private fun KakaoMapPicker(
-    lat: Double,
-    lng: Double,
-    onPointSelected: (Double, Double) -> Unit
-) {
-    val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val mapView = remember { MapView(context) }
 
-    DisposableEffect(mapView, lifecycleOwner, lat, lng) {
-        mapView.start(
-            object : MapLifeCycleCallback() {
-                override fun onMapDestroy() = Unit
-                override fun onMapError(error: Exception?) = Unit
-            },
-            object : KakaoMapReadyCallback() {
-                override fun onMapReady(kakaoMap: com.kakao.vectormap.KakaoMap) {
-                    kakaoMap.setOnMapClickListener { _, position, _, _ ->
-                        onPointSelected(position.latitude, position.longitude)
-                    }
-                }
-
-                override fun getPosition(): LatLng = LatLng.from(lat, lng)
-            }
-        )
-
-        val observer = LifecycleEventObserver { _, event ->
-            when (event) {
-                Lifecycle.Event.ON_RESUME -> mapView.resume()
-                Lifecycle.Event.ON_PAUSE -> mapView.pause()
-                else -> Unit
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-            mapView.pause()
-        }
-    }
-
-    AndroidView(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(220.dp),
-        factory = { mapView }
-    )
-}
 
