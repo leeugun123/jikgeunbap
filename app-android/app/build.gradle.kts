@@ -1,4 +1,6 @@
 import org.gradle.kotlin.dsl.implementation
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -8,6 +10,10 @@ plugins {
 }
 
 apply(plugin = "kotlin-kapt")
+
+val properties = Properties().apply {
+    load(FileInputStream(rootProject.file("local.properties")))
+}
 
 android {
     namespace = "com.example.jikgeunbap.app"
@@ -24,8 +30,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-        val kakaoAppKey = providers.gradleProperty("KAKAO_NATIVE_APP_KEY").orElse("").get()
-        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", "\"$kakaoAppKey\"")
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", properties.getProperty("KAKAO_NATIVE_APP_KEY"))
     }
     buildTypes {
         release {
