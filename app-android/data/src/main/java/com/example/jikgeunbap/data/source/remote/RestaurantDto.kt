@@ -13,12 +13,12 @@ data class RestaurantDto(
 ) {
     fun toDomain(): Restaurant =
         Restaurant(
-            id = id,
-            name = name,
+            id       = id,
+            name     = name,
             category = category,
             distance = distance,
+            rating   = rating,
             imageUrl = null,
-            tags = tags
+            tags     = tags
         )
 }
-

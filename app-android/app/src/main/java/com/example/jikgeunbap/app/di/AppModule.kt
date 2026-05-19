@@ -1,11 +1,16 @@
 package com.example.jikgeunbap.app.di
 
+import android.content.Context
+import com.example.jikgeunbap.data.repository.FavoriteRepositoryImpl
+import com.example.jikgeunbap.data.repository.HistoryRepositoryImpl
+import com.example.jikgeunbap.data.repository.OnboardingRepositoryImpl
 import com.example.jikgeunbap.data.repository.RestaurantRepositoryImpl
 import com.example.jikgeunbap.data.repository.WorkplaceRepositoryImpl
-import com.example.jikgeunbap.data.repository.OnboardingRepositoryImpl
 import com.example.jikgeunbap.data.source.RemoteRestaurantDataSource
 import com.example.jikgeunbap.data.source.remote.RemoteRestaurantDataSourceImpl
 import com.example.jikgeunbap.data.source.remote.RestaurantApiService
+import com.example.jikgeunbap.domain.repository.FavoriteRepository
+import com.example.jikgeunbap.domain.repository.HistoryRepository
 import com.example.jikgeunbap.domain.repository.OnboardingRepository
 import com.example.jikgeunbap.domain.repository.RestaurantRepository
 import com.example.jikgeunbap.domain.repository.WorkplaceRepository
@@ -13,9 +18,8 @@ import com.example.jikgeunbap.domain.usecase.GetRandomLunchRestaurantUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import android.content.Context
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -41,7 +45,7 @@ object AppModule {
     @Singleton
     fun provideRetrofit(client: OkHttpClient): Retrofit =
         Retrofit.Builder()
-            // 안드로이드 에뮬레이터에서 로컬호스트에 접근할 때는 10.0.2.2 사용
+            // 안드로이드 에뮬레이터에서 로컬호스트 접근 시 10.0.2.2 사용
             .baseUrl("http://10.0.2.2:8080/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
@@ -51,6 +55,8 @@ object AppModule {
     @Singleton
     fun provideRestaurantApiService(retrofit: Retrofit): RestaurantApiService =
         retrofit.create(RestaurantApiService::class.java)
+
+    // ── Repository ────────────────────────────────────────────────────────────
 
     @Provides
     @Singleton
@@ -80,6 +86,22 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGetRandomLunchRestaurantUseCase(repository: RestaurantRepository): GetRandomLunchRestaurantUseCase =
+    fun provideFavoriteRepository(
+        @ApplicationContext context: Context
+    ): FavoriteRepository = FavoriteRepositoryImpl(context)
+
+    @Provides
+    @Singleton
+    fun provideHistoryRepository(
+        @ApplicationContext context: Context
+    ): HistoryRepository = HistoryRepositoryImpl(context)
+
+    // ── UseCase ───────────────────────────────────────────────────────────────
+
+    @Provides
+    @Singleton
+    fun provideGetRandomLunchRestaurantUseCase(
+        repository: RestaurantRepository
+    ): GetRandomLunchRestaurantUseCase =
         GetRandomLunchRestaurantUseCase(repository)
 }
