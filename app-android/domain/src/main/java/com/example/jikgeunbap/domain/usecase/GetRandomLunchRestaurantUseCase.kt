@@ -7,9 +7,9 @@ import javax.inject.Inject
 class GetRandomLunchRestaurantUseCase @Inject constructor(
     private val repository: RestaurantRepository
 ) {
-    suspend operator fun invoke(): Restaurant? {
+    suspend operator fun invoke(category: String? = null): Restaurant? {
         val list = repository.getRestaurants()
-        return if (list.isNotEmpty()) list.random() else null
+        val filtered = if (category != null) list.filter { it.category == category } else list
+        return if (filtered.isNotEmpty()) filtered.random() else null
     }
 }
-
