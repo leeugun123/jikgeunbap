@@ -31,6 +31,7 @@ android {
             useSupportLibrary = true
         }
         buildConfigField("String", "KAKAO_NATIVE_APP_KEY", properties.getProperty("KAKAO_NATIVE_APP_KEY"))
+        buildConfigField("String", "KAKAO_REST_API_KEY", properties.getProperty("KAKAO_REST_API_KEY", "\"\""))
     }
     buildTypes {
         release {
@@ -91,4 +92,5 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation("com.kakao.maps.open:android:2.13.1")
+    implementation("io.coil-kt:coil-compose:2.6.0")
 }

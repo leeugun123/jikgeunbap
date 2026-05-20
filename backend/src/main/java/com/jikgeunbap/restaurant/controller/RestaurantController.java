@@ -1,13 +1,12 @@
 package com.jikgeunbap.restaurant.controller;
 
+import com.jikgeunbap.restaurant.dto.RestaurantRequest;
 import com.jikgeunbap.restaurant.dto.RestaurantResponse;
 import com.jikgeunbap.restaurant.service.RestaurantService;
 import com.jikgeunbap.restaurant.service.RestaurantService.Sort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +16,8 @@ import java.util.List;
 public class RestaurantController {
 
     private final RestaurantService restaurantService;
+
+    // ── 조회 ──────────────────────────────────────────────────────────────────
 
     @GetMapping("/nearby")
     public List<RestaurantResponse> getNearby(
@@ -28,5 +29,36 @@ public class RestaurantController {
     ) {
         return restaurantService.getNearby(lat, lng, radius, category, Sort.from(sort));
     }
-}
 
+    @GetMapping
+    public List<RestaurantResponse> getAll() {
+        return restaurantService.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public RestaurantResponse getById(@PathVariable Long id) {
+        return restaurantService.getById(id);
+    }
+
+    // ── CRUD ──────────────────────────────────────────────────────────────────
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public RestaurantResponse create(@RequestBody RestaurantRequest request) {
+        return restaurantService.create(request);
+    }
+
+    @PutMapping("/{id}")
+    public RestaurantResponse update(
+            @PathVariable Long id,
+            @RequestBody RestaurantRequest request
+    ) {
+        return restaurantService.update(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        restaurantService.delete(id);
+    }
+}

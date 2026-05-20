@@ -1,7 +1,10 @@
 package com.example.jikgeunbap.app.presentation.ui.workplace
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -18,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jikgeunbap.app.presentation.theme.*
 import com.example.jikgeunbap.app.presentation.ui.common.KakaoMapPicker
+import com.example.jikgeunbap.domain.model.KakaoPlace
 
 @Composable
 fun WorkplaceScreen(
@@ -26,13 +30,16 @@ fun WorkplaceScreen(
     onSaved: (() -> Unit)? = null,
     viewModel: WorkplaceViewModel = hiltViewModel()
 ) {
-    val lat         by viewModel.lat.collectAsState()
-    val lng         by viewModel.lng.collectAsState()
-    val placeName   by viewModel.placeName.collectAsState()
-    val address     by viewModel.address.collectAsState()
-    val radiusMeter by viewModel.radiusMeter.collectAsState()
-    val message     by viewModel.message.collectAsState()
-    val saved       by viewModel.saved.collectAsState()
+    val lat           by viewModel.lat.collectAsState()
+    val lng           by viewModel.lng.collectAsState()
+    val placeName     by viewModel.placeName.collectAsState()
+    val address       by viewModel.address.collectAsState()
+    val radiusMeter   by viewModel.radiusMeter.collectAsState()
+    val message       by viewModel.message.collectAsState()
+    val saved         by viewModel.saved.collectAsState()
+    val searchQuery   by viewModel.searchQuery.collectAsState()
+    val searchResults by viewModel.searchResults.collectAsState()
+    val isSearching   by viewModel.isSearching.collectAsState()
 
     LaunchedEffect(Unit) { viewModel.load() }
     LaunchedEffect(saved) {
@@ -85,6 +92,16 @@ fun WorkplaceScreen(
                 .padding(horizontal = 20.dp, vertical = 20.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
+            // ── 키워드 검색 ────────────────────────────────────────────────
+            KeywordSearchSection(
+                query         = searchQuery,
+                onQueryChange = viewModel::onSearchQueryChange,
+                onSearch      = viewModel::searchPlace,
+                isSearching   = isSearching,
+                results       = searchResults,
+                onSelectPlace = viewModel::selectPlace
+            )
+
             // 장소명
             WarmTextField(
                 value         = placeName,
@@ -166,6 +183,110 @@ fun WorkplaceScreen(
                     color      = Color.White
                 )
             }
+        }
+    }
+}
+
+// ── 키워드 검색 섹션 ──────────────────────────────────────────────────────────
+@Composable
+private fun KeywordSearchSection(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    onSearch: () -> Unit,
+    isSearching: Boolean,
+    results: List<KakaoPlace>,
+    onSelectPlace: (KakaoPlace) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(WarmContainer)
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Text(
+            text       = "🔍 직장 위치 검색",
+            fontWeight = FontWeight.SemiBold,
+            fontSize   = 14.sp,
+            color      = WarmBrown
+        )
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment     = Alignment.CenterVertically
+        ) {
+            OutlinedTextField(
+                value         = query,
+                onValueChange = onQueryChange,
+                placeholder   = { Text("회사명 또는 주소 입력", fontSize = 13.sp) },
+                modifier      = Modifier.weight(1f),
+                shape         = RoundedCornerShape(12.dp),
+                colors        = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor   = WarmOrange,
+                    unfocusedBorderColor = WarmDivider,
+                    cursorColor          = WarmOrange
+                ),
+                singleLine = true
+            )
+            Button(
+                onClick  = onSearch,
+                enabled  = !isSearching && query.isNotBlank(),
+                shape    = RoundedCornerShape(12.dp),
+                colors   = ButtonDefaults.buttonColors(containerColor = WarmOrange),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 14.dp)
+            ) {
+                if (isSearching) {
+                    CircularProgressIndicator(
+                        modifier    = Modifier.size(18.dp),
+                        color       = Color.White,
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Text("검색", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                }
+            }
+        }
+
+        if (results.isNotEmpty()) {
+            LazyColumn(
+                modifier              = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 240.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(WarmSurface),
+                verticalArrangement   = Arrangement.spacedBy(0.dp)
+            ) {
+                items(results) { place ->
+                    PlaceResultItem(place = place, onClick = { onSelectPlace(place) })
+                    Divider(color = WarmDivider, thickness = 0.5.dp)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PlaceResultItem(place: KakaoPlace, onClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(horizontal = 14.dp, vertical = 10.dp)
+    ) {
+        Text(
+            text       = place.placeName,
+            fontWeight = FontWeight.SemiBold,
+            fontSize   = 14.sp,
+            color      = WarmBrown
+        )
+        val displayAddr = place.roadAddressName.ifBlank { place.addressName }
+        if (displayAddr.isNotBlank()) {
+            Text(
+                text     = displayAddr,
+                fontSize = 12.sp,
+                color    = WarmBrownMid
+            )
         }
     }
 }

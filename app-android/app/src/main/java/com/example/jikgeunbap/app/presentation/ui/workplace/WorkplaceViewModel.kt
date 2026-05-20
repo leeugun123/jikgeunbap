@@ -2,11 +2,14 @@ package com.example.jikgeunbap.app.presentation.ui.workplace
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.jikgeunbap.domain.model.KakaoPlace
 import com.example.jikgeunbap.domain.model.Workplace
 import com.example.jikgeunbap.domain.usecase.CompleteWorkplaceOnboardingUseCase
 import com.example.jikgeunbap.domain.usecase.GetWorkplaceUseCase
+import com.example.jikgeunbap.domain.usecase.SearchPlaceUseCase
 import com.example.jikgeunbap.domain.usecase.SetWorkplaceUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -16,7 +19,8 @@ import javax.inject.Inject
 class WorkplaceViewModel @Inject constructor(
     private val getWorkplaceUseCase: GetWorkplaceUseCase,
     private val setWorkplaceUseCase: SetWorkplaceUseCase,
-    private val completeWorkplaceOnboardingUseCase: CompleteWorkplaceOnboardingUseCase
+    private val completeWorkplaceOnboardingUseCase: CompleteWorkplaceOnboardingUseCase,
+    private val searchPlaceUseCase: SearchPlaceUseCase
 ) : ViewModel() {
 
     private val _placeName    = MutableStateFlow("")
@@ -40,6 +44,44 @@ class WorkplaceViewModel @Inject constructor(
 
     private val _saved         = MutableStateFlow(false)
     val saved: StateFlow<Boolean> = _saved
+
+    // ── 키워드 검색 ──────────────────────────────────────────────────────────
+    private val _searchQuery   = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery
+
+    private val _searchResults = MutableStateFlow<List<KakaoPlace>>(emptyList())
+    val searchResults: StateFlow<List<KakaoPlace>> = _searchResults
+
+    private val _isSearching   = MutableStateFlow(false)
+    val isSearching: StateFlow<Boolean> = _isSearching
+
+    private var searchJob: Job? = null
+
+    fun onSearchQueryChange(value: String) { _searchQuery.value = value }
+
+    fun searchPlace() {
+        val query = _searchQuery.value.trim()
+        if (query.isBlank()) return
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            _isSearching.value = true
+            runCatching { searchPlaceUseCase(query) }
+                .onSuccess { _searchResults.value = it }
+                .onFailure { _message.value = "장소 검색 실패: ${it.message}" }
+            _isSearching.value = false
+        }
+    }
+
+    fun selectPlace(place: KakaoPlace) {
+        _lat.value       = place.lat.toString()
+        _lng.value       = place.lng.toString()
+        _placeName.value = place.placeName
+        _address.value   = place.roadAddressName.ifBlank { place.addressName }
+        _searchResults.value = emptyList()
+        _searchQuery.value   = ""
+    }
+
+    fun clearSearchResults() { _searchResults.value = emptyList() }
 
     fun onLatChange(value: String)     { _lat.value = value }
     fun onLngChange(value: String)     { _lng.value = value }

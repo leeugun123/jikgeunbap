@@ -12,25 +12,25 @@ public record RestaurantResponse(
         int distance,
         double rating,
         int ratingCount,
-        List<String> tags
+        List<String> tags,
+        String imageUrl
 ) {
-
     public static RestaurantResponse from(Restaurant restaurant, int distanceMeter) {
         List<String> tagList = restaurant.getTags() == null || restaurant.getTags().isEmpty()
                 ? List.of()
                 : Arrays.stream(restaurant.getTags().split(","))
-                .map(String::trim)
-                .toList();
+                        .map(String::trim)
+                        .toList();
 
         return new RestaurantResponse(
                 restaurant.getId(),
                 restaurant.getName(),
                 restaurant.getCategory(),
                 distanceMeter,
-                restaurant.getRating() == null ? 0.0 : restaurant.getRating(),
-                restaurant.getRatingCount() == null ? 0 : restaurant.getRatingCount(),
-                tagList
+                restaurant.getRating()      == null ? 0.0 : restaurant.getRating(),
+                restaurant.getRatingCount() == null ? 0   : restaurant.getRatingCount(),
+                tagList,
+                restaurant.getImageUrl()
         );
     }
 }
-

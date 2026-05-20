@@ -9,7 +9,8 @@ data class RestaurantDto(
     val distance: Int,
     val rating: Double,
     val ratingCount: Int,
-    val tags: List<String>
+    val tags: List<String>,
+    val imageUrl: String? = null
 ) {
     fun toDomain(): Restaurant =
         Restaurant(
@@ -18,7 +19,7 @@ data class RestaurantDto(
             category = category,
             distance = distance,
             rating   = rating,
-            imageUrl = null,
+            imageUrl = imageUrl,
             tags     = tags
         )
 }

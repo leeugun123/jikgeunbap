@@ -31,9 +31,24 @@ public class Restaurant {
     private Double rating;
     private Integer ratingCount;
 
-    /**
-     * 예: "분식,가성비"
-     */
+    /** 예: "분식,가성비" */
     private String tags;
-}
 
+    /** 식당 대표 이미지 URL (선택) */
+    private String imageUrl;
+
+    /** CRUD 업데이트용 */
+    public void update(String name, String category,
+                       Double latitude, Double longitude,
+                       Double rating, Integer ratingCount,
+                       String tags, String imageUrl) {
+        if (name != null)        this.name        = name;
+        if (category != null)    this.category    = category;
+        if (latitude != null)    this.latitude    = latitude;
+        if (longitude != null)   this.longitude   = longitude;
+        if (rating != null)      this.rating      = rating;
+        if (ratingCount != null) this.ratingCount = ratingCount;
+        if (tags != null)        this.tags        = tags;
+        if (imageUrl != null)    this.imageUrl    = imageUrl;
+    }
+}

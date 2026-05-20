@@ -22,11 +22,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import com.example.jikgeunbap.app.presentation.theme.*
 import com.example.jikgeunbap.domain.model.Restaurant
 
@@ -95,18 +97,35 @@ fun MainScreen(
                 .padding(horizontal = 20.dp)
         )
 
-        // ── 에러 메시지 ────────────────────────────────────────
+        // ── 에러 메시지 + 재시도 버튼 ──────────────────────────
         if (error != null) {
             Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text      = "⚠️ $error",
-                color     = WarmError,
-                fontSize  = 13.sp,
-                modifier  = Modifier
+            Column(
+                modifier              = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp),
-                textAlign = TextAlign.Center
-            )
+                horizontalAlignment   = Alignment.CenterHorizontally,
+                verticalArrangement   = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text      = "⚠️ $error",
+                    color     = WarmError,
+                    fontSize  = 13.sp,
+                    textAlign = TextAlign.Center
+                )
+                OutlinedButton(
+                    onClick = { viewModel.recommend() },
+                    shape   = RoundedCornerShape(12.dp),
+                    colors  = ButtonDefaults.outlinedButtonColors(contentColor = WarmOrange),
+                    border  = androidx.compose.foundation.BorderStroke(1.dp, WarmOrange)
+                ) {
+                    Text(
+                        text       = "🔄 다시 시도",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize   = 13.sp
+                    )
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -268,7 +287,7 @@ private fun RestaurantCardContent(
                 .padding(24.dp),
             horizontalAlignment   = Alignment.CenterHorizontally
         ) {
-            // 카테고리 아이콘
+            // 이미지 또는 카테고리 이모지
             Box(
                 modifier         = Modifier
                     .size(72.dp)
@@ -276,10 +295,21 @@ private fun RestaurantCardContent(
                     .background(WarmContainer),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text     = categoryEmoji(restaurant.category),
-                    fontSize = 38.sp
-                )
+                if (!restaurant.imageUrl.isNullOrBlank()) {
+                    AsyncImage(
+                        model              = restaurant.imageUrl,
+                        contentDescription = restaurant.name,
+                        contentScale       = ContentScale.Crop,
+                        modifier           = Modifier
+                            .size(72.dp)
+                            .clip(CircleShape)
+                    )
+                } else {
+                    Text(
+                        text     = categoryEmoji(restaurant.category),
+                        fontSize = 38.sp
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(14.dp))
