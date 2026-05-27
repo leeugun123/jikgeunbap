@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+#
+# pre-commit
+# ──────────
+# CLAUDE.md → README.md 자동 동기화.
+# 변경된 README.md가 있으면 현재 커밋에 자동 포함시킨다.
+#
+# 활성화: git config core.hooksPath .githooks
+
+set -e
+
+# 저장소 루트로 이동
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+
+# 동기화 스크립트가 없으면 조용히 통과
+if [ ! -f scripts/sync-readme.py ]; then
+    exit 0
+fi
+
+# CLAUDE.md 또는 README.md가 없으면 동기화 의미 없음
+if [ ! -f CLAUDE.md ] || [ ! -f README.md ]; then
+    exit 0
+fi
+
+# Python 3 없으면 경고만 띄우고 통과 (다른 OS 호환성)
+if ! command -v python3 >/dev/null 2>&1; then
+    echo "[pre-commit] python3 없음 — README 동기화 건너뜀"
+    exit 0
+fi
+
+python3 scripts/sync-readme.py
+
+# README.md가 변경됐다면 커밋에 포함
+if ! git diff --quiet README.md; then
+    git add README.md
+    echo "[pre-commit] README.md를 이번 커밋에 포함시킴"
+fi
+
+exit 0

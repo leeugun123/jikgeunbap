@@ -1,25 +1,15 @@
-# 직근밥 (JikGeunBap) — CLAUDE.md
+# 직근밥 (JikGeunBap) 🍱
 
 <!-- README:tagline -->
 **AI가 직장 근처 맛집을 골라주는 점심 큐레이터.** 사용자가 직장 위치만 설정하면, 날씨·요일·시간·거리·평점을 종합해 식당 한 곳을 자연어 추천 이유와 함께 제시합니다.
 <!-- /README:tagline -->
 
-> Android(Jetpack Compose) + Spring Boot 멀티 모듈 프로젝트. 모든 변경은 main 브랜치에 직접 푸시 (PR 없음).
+> ℹ️ 이 파일의 일부 섹션(`<!-- README:* -->` 마커 사이)은 매 커밋 시 [`CLAUDE.md`](./CLAUDE.md)에서 자동 동기화됩니다.
+> 직접 편집하지 말고 `CLAUDE.md`를 수정하세요.
 
 ---
 
-## 도메인
-
-- **핵심 가치**: "직장인의 점심 고민을 5초 안에 끝내는, 컨텍스트 인지형 AI 큐레이터"
-- **현재 단계**: Phase 1 — 룰베이스 + 날씨 컨텍스트
-- **다음 단계 후보**:
-  1. LLM(Claude API)으로 추천 이유 생성
-  2. 👍/👎 피드백 시그널 수집 + 개인화 학습
-  3. 카카오 Local API로 실데이터 import (시드 → 실제 식당)
-
----
-
-## 주요 기능
+## ✨ 주요 기능
 
 <!-- README:features -->
 - 🤖 **AI 추천 이유 자동 생성** — 날씨·요일·시간대·거리·평점을 조합해 한 문장 (예: *"비 오는 화요일 점심, 따뜻한 한 그릇 어때요? 코앞에 있는 평이 좋은 한식 맛집을 골랐어요."*)
@@ -31,7 +21,7 @@
 
 ---
 
-## 기술 스택
+## 🧱 기술 스택
 
 <!-- README:techstack -->
 | 영역 | 스택 |
@@ -45,7 +35,7 @@
 
 ---
 
-## 모듈 구조
+## 📂 모듈 구조
 
 <!-- README:architecture -->
 ```
@@ -83,33 +73,7 @@ JikGeunBap/
 
 ---
 
-## 핵심 흐름
-
-```
-[Android]                          [Backend]                    [외부]
-MainScreen
-  ↓ "AI에게 추천받기"
-GetRecommendationUseCase
-  ↓
-RestaurantRepository.getRecommendation()
-  ↓
-GET /api/restaurants/recommend?lat&lng  →  RestaurantService.recommend()
-                                              ├─ WeatherService.getCurrent()
-                                              │     ↓ (cache miss)
-                                              │   OpenMeteoWeatherClient    →  Open-Meteo API
-                                              ├─ 후보 추출 (반경 500m)
-                                              ├─ applyWeatherBias (카테고리 +0.6)
-                                              ├─ Top-5 가중 랜덤
-                                              └─ buildReason (날씨+요일+시간+거리+평점)
-                                              ↓
-                                       RecommendationResponse(restaurant, reason)
-  ↓
-MainScreen 카드 + 🤖 AI 추천 이유 박스
-```
-
----
-
-## 빌드 / 실행
+## 🚀 빠른 시작
 
 <!-- README:quickstart -->
 **Backend**:
@@ -135,51 +99,19 @@ curl "http://localhost:8080/api/restaurants/recommend?lat=37.5665&lng=126.9780"
 
 ---
 
-## 파일 경로 치트시트
+## 🛠 개발자 가이드
 
-| 작업 | 파일 |
-|---|---|
-| **추천 알고리즘 수정** | `backend/.../restaurant/service/RestaurantService.java` (`recommend`, `buildReason`, `weatherOpener`) |
-| **날씨 매핑 변경** | `backend/.../weather/OpenMeteoWeatherClient.java` (`mapCondition`, `describe`) |
-| **시드 식당 추가** | `backend/.../JikgeunbapServerApplication.java` (`initRestaurants`) |
-| **추천 카드 UI** | `app-android/.../ui/main/MainScreen.kt` (`ResultContent`) |
-| **직장 검색 UI** | `app-android/.../ui/workplace/WorkplaceScreen.kt` |
-| **버전 관리** | `app-android/gradle/libs.versions.toml` |
-| **DI 와이어링** | `app-android/.../app/di/AppModule.kt` |
+자세한 아키텍처, 추천 알고리즘 흐름, 파일 경로 치트시트, 컨벤션은 [`CLAUDE.md`](./CLAUDE.md)를 참고하세요.
 
----
+### 자동 동기화 활성화 (clone 후 1회)
 
-## 컨벤션
-
-- **모든 변경은 main에 직접 푸시** — PR 만들지 않음
-- **삭제 우선** — 도메인에서 벗어난 기능은 즉시 제거 (Phase 1까지: 즐겨찾기/히스토리/카테고리필터/별점UI 등 전부 제거함)
-- **외부 의존성은 인터페이스 뒤로** — `WeatherClient`처럼 추상화하여 교체 가능하게
-- **Graceful Degradation** — 외부 API 실패 시 추천이 끊기지 않게 fallback (`WeatherService.getCurrent()` → `Optional.empty()`)
-
----
-
-## README 자동 동기화
-
-이 문서(`CLAUDE.md`)가 **단일 진실 공급원(source of truth)**입니다. README.md는 매 커밋 시 `CLAUDE.md`의 마커(`<!-- README:이름 -->...<!-- /README:이름 -->`) 블록을 추출해 자동 갱신됩니다.
-
-**설치 (최초 1회)**:
 ```bash
 git config core.hooksPath .githooks
 chmod +x .githooks/pre-commit scripts/sync-readme.py
 ```
 
-**동작**:
-1. 개발자가 `git commit` 실행
-2. `.githooks/pre-commit`이 `scripts/sync-readme.py` 호출
-3. CLAUDE.md의 `README:이름` 마커 블록을 README.md의 동명 블록 사이에 복사
-4. 변경된 README.md를 자동 `git add` 후 커밋에 포함
+---
 
-**수동 실행**:
-```bash
-python3 scripts/sync-readme.py
-```
+## 📝 라이선스
 
-**새 동기화 블록 추가**:
-1. CLAUDE.md에 `<!-- README:새이름 -->...<!-- /README:새이름 -->` 추가
-2. README.md에 동일한 마커만 추가 (내용 비워둠)
-3. 다음 커밋부터 자동 채워짐
+MIT
