@@ -1,5 +1,6 @@
 package com.jikgeunbap.restaurant.service;
 
+import com.jikgeunbap.restaurant.dto.RecommendationResponse;
 import com.jikgeunbap.restaurant.dto.RestaurantRequest;
 import com.jikgeunbap.restaurant.dto.RestaurantResponse;
 import com.jikgeunbap.restaurant.entity.Restaurant;
@@ -8,10 +9,12 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @RequiredArgsConstructor
@@ -60,6 +63,86 @@ public class RestaurantService {
                 .sorted(comparator)
                 .map(c -> RestaurantResponse.from(c.restaurant(), c.distanceMeter()))
                 .toList();
+    }
+
+    // ── AI 추천 ───────────────────────────────────────────────────────────────
+
+    /**
+     * 직장 좌표 기준 반경 500m 후보 중 점수 상위 5개에서 가중 랜덤 1개 선택.
+     * 시간/요일/거리/평점 컨텍스트를 조합해 자연어 추천 이유 한 문장 생성.
+     */
+    public RecommendationResponse recommend(double lat, double lng) {
+        final int radiusMeter = 500;
+
+        List<Candidate> candidates = restaurantRepository.findAll().stream()
+                .map(r -> toCandidate(lat, lng, r))
+                .filter(c -> c.distanceMeter() <= radiusMeter)
+                .sorted(Comparator.comparingDouble(Candidate::score).reversed())
+                .limit(5)
+                .toList();
+
+        if (candidates.isEmpty()) {
+            throw new RuntimeException("주변 500m 내 추천할 식당이 없어요.");
+        }
+
+        // Top-5 중 가중 랜덤 (1위 가중치 5, 2위 4, ...)
+        Candidate picked = weightedPick(candidates);
+
+        String reason = buildReason(picked, LocalDateTime.now());
+        return new RecommendationResponse(
+                RestaurantResponse.from(picked.restaurant(), picked.distanceMeter()),
+                reason
+        );
+    }
+
+    private Candidate weightedPick(List<Candidate> candidates) {
+        int totalWeight = candidates.size() * (candidates.size() + 1) / 2;
+        int r = ThreadLocalRandom.current().nextInt(totalWeight);
+        int cumulative = 0;
+        for (int i = 0; i < candidates.size(); i++) {
+            cumulative += candidates.size() - i;
+            if (r < cumulative) return candidates.get(i);
+        }
+        return candidates.get(0);
+    }
+
+    private String buildReason(Candidate c, LocalDateTime now) {
+        String timeOfDay = switch (now.getHour()) {
+            case 6, 7, 8, 9, 10        -> "아침";
+            case 11, 12, 13            -> "점심";
+            case 14, 15, 16            -> "오후";
+            case 17, 18, 19, 20        -> "저녁";
+            default                    -> "야식";
+        };
+
+        String dayMood = switch (now.getDayOfWeek()) {
+            case MONDAY    -> "월요일엔 든든하게";
+            case TUESDAY   -> "화요일 점심";
+            case WEDNESDAY -> "주중 한가운데";
+            case THURSDAY  -> "곧 주말이에요";
+            case FRIDAY    -> "TGIF, 가볍게";
+            case SATURDAY  -> "주말 식사";
+            case SUNDAY    -> "일요일 한 끼";
+        };
+
+        String distancePhrase = c.distanceMeter() < 150 ? "걸어서 2분"
+                              : c.distanceMeter() < 300 ? "코앞에 있는"
+                              : c.distanceMeter() < 450 ? "가까운"
+                              : "조금 걸어볼 만한";
+
+        String ratingPhrase = c.rating() >= 4.5 ? "강력 추천하는"
+                            : c.rating() >= 4.2 ? "평이 좋은"
+                            : c.rating() >= 4.0 ? "꾸준히 사랑받는"
+                            : "한 번쯤 시도해볼";
+
+        String categoryPhrase = c.restaurant().getCategory() != null
+                ? c.restaurant().getCategory() + " 맛집"
+                : "맛집";
+
+        return String.format(
+                "%s %s엔 %s %s, %s이에요.",
+                dayMood, timeOfDay, distancePhrase, ratingPhrase, categoryPhrase
+        );
     }
 
     // ── CRUD ──────────────────────────────────────────────────────────────────

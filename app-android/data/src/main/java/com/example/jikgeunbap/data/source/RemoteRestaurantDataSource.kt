@@ -1,7 +1,7 @@
 package com.example.jikgeunbap.data.source
 
-import com.example.jikgeunbap.domain.model.Restaurant
+import com.example.jikgeunbap.domain.model.Recommendation
 
 interface RemoteRestaurantDataSource {
-    suspend fun fetchRestaurants(): List<Restaurant>
+    suspend fun fetchRecommendation(): Recommendation
 }

@@ -2,8 +2,6 @@ package com.example.jikgeunbap.app.di
 
 import android.content.Context
 import com.example.jikgeunbap.app.BuildConfig
-import com.example.jikgeunbap.data.repository.FavoriteRepositoryImpl
-import com.example.jikgeunbap.data.repository.HistoryRepositoryImpl
 import com.example.jikgeunbap.data.repository.KakaoLocalRepositoryImpl
 import com.example.jikgeunbap.data.repository.OnboardingRepositoryImpl
 import com.example.jikgeunbap.data.repository.RestaurantRepositoryImpl
@@ -12,13 +10,10 @@ import com.example.jikgeunbap.data.source.RemoteRestaurantDataSource
 import com.example.jikgeunbap.data.source.remote.KakaoLocalApiService
 import com.example.jikgeunbap.data.source.remote.RemoteRestaurantDataSourceImpl
 import com.example.jikgeunbap.data.source.remote.RestaurantApiService
-import com.example.jikgeunbap.domain.repository.FavoriteRepository
-import com.example.jikgeunbap.domain.repository.HistoryRepository
 import com.example.jikgeunbap.domain.repository.KakaoLocalRepository
 import com.example.jikgeunbap.domain.repository.OnboardingRepository
 import com.example.jikgeunbap.domain.repository.RestaurantRepository
 import com.example.jikgeunbap.domain.repository.WorkplaceRepository
-import com.example.jikgeunbap.domain.usecase.GetRandomLunchRestaurantUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,6 +30,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    // ── 백엔드 API ────────────────────────────────────────────────────────────
 
     @Provides
     @Singleton
@@ -132,25 +129,4 @@ object AppModule {
     fun provideRestaurantRepository(
         remoteRestaurantDataSource: RemoteRestaurantDataSource
     ): RestaurantRepository = RestaurantRepositoryImpl(remoteRestaurantDataSource)
-
-    @Provides
-    @Singleton
-    fun provideFavoriteRepository(
-        @ApplicationContext context: Context
-    ): FavoriteRepository = FavoriteRepositoryImpl(context)
-
-    @Provides
-    @Singleton
-    fun provideHistoryRepository(
-        @ApplicationContext context: Context
-    ): HistoryRepository = HistoryRepositoryImpl(context)
-
-    // ── UseCase ───────────────────────────────────────────────────────────────
-
-    @Provides
-    @Singleton
-    fun provideGetRandomLunchRestaurantUseCase(
-        repository: RestaurantRepository
-    ): GetRandomLunchRestaurantUseCase =
-        GetRandomLunchRestaurantUseCase(repository)
 }

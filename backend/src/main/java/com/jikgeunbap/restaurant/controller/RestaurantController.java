@@ -1,5 +1,6 @@
 package com.jikgeunbap.restaurant.controller;
 
+import com.jikgeunbap.restaurant.dto.RecommendationResponse;
 import com.jikgeunbap.restaurant.dto.RestaurantRequest;
 import com.jikgeunbap.restaurant.dto.RestaurantResponse;
 import com.jikgeunbap.restaurant.service.RestaurantService;
@@ -16,6 +17,16 @@ import java.util.List;
 public class RestaurantController {
 
     private final RestaurantService restaurantService;
+
+    // ── AI 추천 ───────────────────────────────────────────────────────────────
+
+    @GetMapping("/recommend")
+    public RecommendationResponse recommend(
+            @RequestParam double lat,
+            @RequestParam double lng
+    ) {
+        return restaurantService.recommend(lat, lng);
+    }
 
     // ── 조회 ──────────────────────────────────────────────────────────────────
 
