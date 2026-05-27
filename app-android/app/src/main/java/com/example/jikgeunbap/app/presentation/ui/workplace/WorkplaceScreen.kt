@@ -77,7 +77,7 @@ fun WorkplaceScreen(
                     fontSize   = 24.sp
                 )
                 Text(
-                    text     = "지도를 탭하거나 직접 입력하세요",
+                    text     = "검색하거나 지도에서 위치를 선택하세요",
                     color    = Color.White.copy(alpha = 0.85f),
                     fontSize = 13.sp
                 )
@@ -114,22 +114,6 @@ fun WorkplaceScreen(
                 onValueChange = viewModel::onAddressChange,
                 label         = "주소 (선택)"
             )
-
-            // 위도/경도 Row
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                WarmTextField(
-                    value         = lat,
-                    onValueChange = viewModel::onLatChange,
-                    label         = "위도 (lat)",
-                    modifier      = Modifier.weight(1f)
-                )
-                WarmTextField(
-                    value         = lng,
-                    onValueChange = viewModel::onLngChange,
-                    label         = "경도 (lng)",
-                    modifier      = Modifier.weight(1f)
-                )
-            }
 
             // 지도
             Text(
