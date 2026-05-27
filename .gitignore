@@ -28,6 +28,10 @@ captures/
 ### Secrets (안 넣는 게 안전) ###
 *.jks
 *.keystore
+.env
+.env.local
+**/.env
+**/.env.local
 
 ### Spring Boot ###
 backend/build/
