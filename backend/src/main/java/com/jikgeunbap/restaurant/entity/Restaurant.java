@@ -1,5 +1,6 @@
 package com.jikgeunbap.restaurant.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,6 +37,10 @@ public class Restaurant {
 
     /** 식당 대표 이미지 URL (선택) */
     private String imageUrl;
+
+    /** 카카오 Local API에서 가져온 경우의 place_id (중복 방지용). 시드 데이터는 null. */
+    @Column(unique = true)
+    private String kakaoPlaceId;
 
     /** CRUD 업데이트용 */
     public void update(String name, String category,
