@@ -5,6 +5,9 @@ import com.jikgeunbap.restaurant.dto.RestaurantRequest;
 import com.jikgeunbap.restaurant.dto.RestaurantResponse;
 import com.jikgeunbap.restaurant.entity.Restaurant;
 import com.jikgeunbap.restaurant.repository.RestaurantRepository;
+import com.jikgeunbap.weather.WeatherCondition;
+import com.jikgeunbap.weather.WeatherContext;
+import com.jikgeunbap.weather.WeatherService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -21,6 +25,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
+    private final WeatherService weatherService;
 
     // ── 조회 ──────────────────────────────────────────────────────────────────
 
@@ -74,9 +79,12 @@ public class RestaurantService {
     public RecommendationResponse recommend(double lat, double lng) {
         final int radiusMeter = 500;
 
+        Optional<WeatherContext> weather = weatherService.getCurrent(lat, lng);
+
         List<Candidate> candidates = restaurantRepository.findAll().stream()
                 .map(r -> toCandidate(lat, lng, r))
                 .filter(c -> c.distanceMeter() <= radiusMeter)
+                .map(c -> applyWeatherBias(c, weather))
                 .sorted(Comparator.comparingDouble(Candidate::score).reversed())
                 .limit(5)
                 .toList();
@@ -88,10 +96,40 @@ public class RestaurantService {
         // Top-5 중 가중 랜덤 (1위 가중치 5, 2위 4, ...)
         Candidate picked = weightedPick(candidates);
 
-        String reason = buildReason(picked, LocalDateTime.now());
+        String reason = buildReason(picked, LocalDateTime.now(), weather);
         return new RecommendationResponse(
                 RestaurantResponse.from(picked.restaurant(), picked.distanceMeter()),
                 reason
+        );
+    }
+
+    /**
+     * 날씨 조건에 따라 적합한 카테고리에 약한 가중치(+0.6)를 더해 후보 순서에 영향.
+     * 결정적이지 않게 가벼운 부스트만 줘서 다양성 유지.
+     */
+    private Candidate applyWeatherBias(Candidate c, Optional<WeatherContext> weatherOpt) {
+        if (weatherOpt.isEmpty()) return c;
+        WeatherContext w = weatherOpt.get();
+        String category = c.restaurant().getCategory();
+        if (category == null) return c;
+
+        Set<String> warmCategories = Set.of("한식", "중식", "일식");
+        Set<String> coolCategories = Set.of("분식", "양식", "카페");
+
+        double bias = 0.0;
+        if (w.condition() == WeatherCondition.RAIN
+         || w.condition() == WeatherCondition.SNOW
+         || w.isCold()) {
+            if (warmCategories.contains(category)) bias += 0.6;
+        }
+        if (w.isHot()) {
+            if (coolCategories.contains(category)) bias += 0.6;
+        }
+        if (bias == 0.0) return c;
+
+        return new Candidate(
+                c.restaurant(), c.distanceMeter(),
+                c.rating(), c.ratingCount(), c.score() + bias
         );
     }
 
@@ -106,7 +144,7 @@ public class RestaurantService {
         return candidates.get(0);
     }
 
-    private String buildReason(Candidate c, LocalDateTime now) {
+    private String buildReason(Candidate c, LocalDateTime now, Optional<WeatherContext> weatherOpt) {
         String timeOfDay = switch (now.getHour()) {
             case 6, 7, 8, 9, 10        -> "아침";
             case 11, 12, 13            -> "점심";
@@ -115,14 +153,14 @@ public class RestaurantService {
             default                    -> "야식";
         };
 
-        String dayMood = switch (now.getDayOfWeek()) {
-            case MONDAY    -> "월요일엔 든든하게";
-            case TUESDAY   -> "화요일 점심";
-            case WEDNESDAY -> "주중 한가운데";
-            case THURSDAY  -> "곧 주말이에요";
-            case FRIDAY    -> "TGIF, 가볍게";
-            case SATURDAY  -> "주말 식사";
-            case SUNDAY    -> "일요일 한 끼";
+        String dayWord = switch (now.getDayOfWeek()) {
+            case MONDAY    -> "월요일";
+            case TUESDAY   -> "화요일";
+            case WEDNESDAY -> "수요일";
+            case THURSDAY  -> "목요일";
+            case FRIDAY    -> "금요일";
+            case SATURDAY  -> "토요일";
+            case SUNDAY    -> "일요일";
         };
 
         String distancePhrase = c.distanceMeter() < 150 ? "걸어서 2분"
@@ -139,10 +177,36 @@ public class RestaurantService {
                 ? c.restaurant().getCategory() + " 맛집"
                 : "맛집";
 
-        return String.format(
-                "%s %s엔 %s %s, %s이에요.",
-                dayMood, timeOfDay, distancePhrase, ratingPhrase, categoryPhrase
-        );
+        String opener = weatherOpener(weatherOpt, dayWord, timeOfDay);
+        String picker = String.format("%s %s %s를 골랐어요.",
+                distancePhrase, ratingPhrase, categoryPhrase);
+
+        return opener + " " + picker;
+    }
+
+    /** 날씨 + 요일 + 시간대를 묶어 자연스러운 도입 문장을 만든다. */
+    private String weatherOpener(Optional<WeatherContext> weatherOpt, String dayWord, String timeOfDay) {
+        if (weatherOpt.isEmpty()) {
+            return String.format("%s %s엔", dayWord, timeOfDay);
+        }
+        WeatherContext w = weatherOpt.get();
+        String desc = w.description();
+
+        return switch (w.condition()) {
+            case RAIN    -> String.format("%s %s %s, 따뜻한 한 그릇 어때요?", desc, dayWord, timeOfDay);
+            case SNOW    -> String.format("%s %s %s엔 든든한 한 끼가 좋겠어요.", desc, dayWord, timeOfDay);
+            case THUNDER -> String.format("%s %s, 실내에서 차분히 먹기 좋은 곳을 찾았어요.", dayWord, timeOfDay);
+            case FOG     -> String.format("%s %s %s, 정신 깨우는 식사가 필요하시죠?", desc, dayWord, timeOfDay);
+            case CLEAR   -> w.isHot()
+                    ? String.format("%s %s, 시원하게 한 끼 어떠세요?", desc, timeOfDay)
+                    : String.format("%s %s %s, 기분 좋은 식사로 시작해요.", desc, dayWord, timeOfDay);
+            case CLOUDY  -> String.format("%s %s %s, 메뉴 고민을 덜어드릴게요.", desc, dayWord, timeOfDay);
+            default -> {
+                if (w.isCold()) yield String.format("%s %s %s, 몸이 따뜻해지는 음식이 좋겠어요.", desc, dayWord, timeOfDay);
+                if (w.isHot())  yield String.format("%s %s %s, 더위 피하기 좋은 곳을 추천해요.", desc, dayWord, timeOfDay);
+                yield String.format("%s %s엔", dayWord, timeOfDay);
+            }
+        };
     }
 
     // ── CRUD ──────────────────────────────────────────────────────────────────
