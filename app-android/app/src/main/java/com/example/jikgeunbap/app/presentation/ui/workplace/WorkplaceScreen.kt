@@ -34,7 +34,6 @@ fun WorkplaceScreen(
     val lng           by viewModel.lng.collectAsState()
     val placeName     by viewModel.placeName.collectAsState()
     val address       by viewModel.address.collectAsState()
-    val radiusMeter   by viewModel.radiusMeter.collectAsState()
     val message       by viewModel.message.collectAsState()
     val saved         by viewModel.saved.collectAsState()
     val searchQuery   by viewModel.searchQuery.collectAsState()
@@ -131,12 +130,6 @@ fun WorkplaceScreen(
                     modifier      = Modifier.weight(1f)
                 )
             }
-
-            // 반경 슬라이더
-            RadiusSlider(
-                radiusMeter = radiusMeter,
-                onRadiusChange = viewModel::onRadiusChange
-            )
 
             // 지도
             Text(
@@ -314,54 +307,3 @@ private fun WarmTextField(
     )
 }
 
-@Composable
-private fun RadiusSlider(
-    radiusMeter: Int,
-    onRadiusChange: (Int) -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .background(WarmContainer)
-            .padding(horizontal = 16.dp, vertical = 14.dp)
-    ) {
-        Row(
-            modifier              = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment     = Alignment.CenterVertically
-        ) {
-            Text(
-                text       = "📏 추천 반경",
-                fontWeight = FontWeight.SemiBold,
-                fontSize   = 14.sp,
-                color      = WarmBrown
-            )
-            Text(
-                text       = "${radiusMeter}m",
-                fontWeight = FontWeight.ExtraBold,
-                fontSize   = 18.sp,
-                color      = WarmOrange
-            )
-        }
-        Spacer(modifier = Modifier.height(4.dp))
-        Slider(
-            value         = radiusMeter.toFloat(),
-            onValueChange = { onRadiusChange(it.toInt()) },
-            valueRange    = 200f..2000f,
-            steps         = 17,   // 200~2000, 100m 단위 → 18 구간 → 17 steps
-            colors        = SliderDefaults.colors(
-                thumbColor          = WarmOrange,
-                activeTrackColor    = WarmOrange,
-                inactiveTrackColor  = WarmDivider
-            )
-        )
-        Row(
-            modifier              = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text("200m", fontSize = 11.sp, color = WarmBrownMid)
-            Text("2,000m", fontSize = 11.sp, color = WarmBrownMid)
-        }
-    }
-}

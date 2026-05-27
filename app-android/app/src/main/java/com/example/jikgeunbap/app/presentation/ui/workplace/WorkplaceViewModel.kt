@@ -29,10 +29,6 @@ class WorkplaceViewModel @Inject constructor(
     private val _address      = MutableStateFlow("")
     val address: StateFlow<String> = _address
 
-    /** 슬라이더와 연동: 200~2000 (m) */
-    private val _radiusMeter  = MutableStateFlow(500)
-    val radiusMeter: StateFlow<Int> = _radiusMeter
-
     private val _lat           = MutableStateFlow("")
     val lat: StateFlow<String> = _lat
 
@@ -83,11 +79,10 @@ class WorkplaceViewModel @Inject constructor(
 
     fun clearSearchResults() { _searchResults.value = emptyList() }
 
-    fun onLatChange(value: String)     { _lat.value = value }
-    fun onLngChange(value: String)     { _lng.value = value }
+    fun onLatChange(value: String)       { _lat.value = value }
+    fun onLngChange(value: String)       { _lng.value = value }
     fun onPlaceNameChange(value: String) { _placeName.value = value }
-    fun onAddressChange(value: String) { _address.value = value }
-    fun onRadiusChange(value: Int)     { _radiusMeter.value = value.coerceIn(200, 2000) }
+    fun onAddressChange(value: String)   { _address.value = value }
 
     fun onMapPointSelected(lat: Double, lng: Double) {
         _lat.value = lat.toString()
@@ -99,11 +94,10 @@ class WorkplaceViewModel @Inject constructor(
         viewModelScope.launch {
             runCatching { getWorkplaceUseCase() }
                 .onSuccess {
-                    _lat.value         = it.lat.toString()
-                    _lng.value         = it.lng.toString()
-                    _placeName.value   = it.placeName
-                    _address.value     = it.address
-                    _radiusMeter.value = it.radiusMeter.coerceIn(200, 2000)
+                    _lat.value       = it.lat.toString()
+                    _lng.value       = it.lng.toString()
+                    _placeName.value = it.placeName
+                    _address.value   = it.address
                 }
                 .onFailure {
                     _message.value = it.message ?: "직장 위치를 불러오지 못했습니다."
@@ -126,7 +120,7 @@ class WorkplaceViewModel @Inject constructor(
                         lng         = lngValue,
                         placeName   = _placeName.value.ifBlank { "내 직장" },
                         address     = _address.value.ifBlank { "주소 미입력" },
-                        radiusMeter = _radiusMeter.value,
+                        radiusMeter = 500,
                         mapProvider = "kakao"
                     )
                 )
