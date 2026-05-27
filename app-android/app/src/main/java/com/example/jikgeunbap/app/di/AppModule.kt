@@ -2,6 +2,7 @@ package com.example.jikgeunbap.app.di
 
 import android.content.Context
 import com.example.jikgeunbap.app.BuildConfig
+import com.example.jikgeunbap.data.repository.FeedbackRepositoryImpl
 import com.example.jikgeunbap.data.repository.KakaoLocalRepositoryImpl
 import com.example.jikgeunbap.data.repository.OnboardingRepositoryImpl
 import com.example.jikgeunbap.data.repository.RestaurantRepositoryImpl
@@ -10,6 +11,7 @@ import com.example.jikgeunbap.data.source.RemoteRestaurantDataSource
 import com.example.jikgeunbap.data.source.remote.KakaoLocalApiService
 import com.example.jikgeunbap.data.source.remote.RemoteRestaurantDataSourceImpl
 import com.example.jikgeunbap.data.source.remote.RestaurantApiService
+import com.example.jikgeunbap.domain.repository.FeedbackRepository
 import com.example.jikgeunbap.domain.repository.KakaoLocalRepository
 import com.example.jikgeunbap.domain.repository.OnboardingRepository
 import com.example.jikgeunbap.domain.repository.RestaurantRepository
@@ -129,4 +131,10 @@ object AppModule {
     fun provideRestaurantRepository(
         remoteRestaurantDataSource: RemoteRestaurantDataSource
     ): RestaurantRepository = RestaurantRepositoryImpl(remoteRestaurantDataSource)
+
+    @Provides
+    @Singleton
+    fun provideFeedbackRepository(
+        apiService: RestaurantApiService
+    ): FeedbackRepository = FeedbackRepositoryImpl(apiService)
 }

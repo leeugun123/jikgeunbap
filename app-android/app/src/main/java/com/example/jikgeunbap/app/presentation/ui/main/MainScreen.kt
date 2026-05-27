@@ -39,11 +39,14 @@ import com.example.jikgeunbap.app.presentation.theme.WarmBrown
 import com.example.jikgeunbap.app.presentation.theme.WarmBrownMid
 import com.example.jikgeunbap.app.presentation.theme.WarmContainer
 import com.example.jikgeunbap.app.presentation.theme.WarmCream
+import com.example.jikgeunbap.app.presentation.theme.WarmDivider
 import com.example.jikgeunbap.app.presentation.theme.WarmError
 import com.example.jikgeunbap.app.presentation.theme.WarmOrange
 import com.example.jikgeunbap.app.presentation.theme.WarmOrangeLight
+import com.example.jikgeunbap.app.presentation.theme.WarmSuccess
 import com.example.jikgeunbap.app.presentation.theme.WarmSurface
 import com.example.jikgeunbap.domain.model.Recommendation
+import com.example.jikgeunbap.domain.model.Sentiment
 
 private fun categoryEmoji(category: String?) = when (category) {
     "한식"             -> "🍚"
@@ -64,6 +67,7 @@ fun MainScreen(
     val recommendation by viewModel.recommendation.collectAsState()
     val error          by viewModel.error.collectAsState()
     val isLoading      by viewModel.isLoading.collectAsState()
+    val feedback       by viewModel.feedback.collectAsState()
 
     Column(
         modifier              = modifier
@@ -76,9 +80,11 @@ fun MainScreen(
         Spacer(modifier = Modifier.height(28.dp))
 
         RecommendationCard(
-            recommendation = recommendation,
-            isLoading      = isLoading,
-            modifier       = Modifier
+            recommendation   = recommendation,
+            isLoading        = isLoading,
+            feedback         = feedback,
+            onSubmitFeedback = viewModel::submitFeedback,
+            modifier         = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         )
@@ -156,6 +162,8 @@ private fun TopHeader(onOpenWorkplace: () -> Unit) {
 private fun RecommendationCard(
     recommendation: Recommendation?,
     isLoading: Boolean,
+    feedback: Sentiment?,
+    onSubmitFeedback: (Sentiment) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -171,7 +179,11 @@ private fun RecommendationCard(
             when {
                 isLoading && recommendation == null -> LoadingContent()
                 recommendation == null              -> EmptyContent()
-                else                                -> ResultContent(recommendation)
+                else                                -> ResultContent(
+                    rec              = recommendation,
+                    feedback         = feedback,
+                    onSubmitFeedback = onSubmitFeedback
+                )
             }
         }
     }
@@ -205,7 +217,11 @@ private fun EmptyContent() {
 }
 
 @Composable
-private fun ResultContent(rec: Recommendation) {
+private fun ResultContent(
+    rec: Recommendation,
+    feedback: Sentiment?,
+    onSubmitFeedback: (Sentiment) -> Unit
+) {
     Column(
         modifier              = Modifier
             .fillMaxWidth()
@@ -276,6 +292,86 @@ private fun ResultContent(rec: Recommendation) {
                 )
             }
         }
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        FeedbackButtons(
+            feedback         = feedback,
+            onSubmitFeedback = onSubmitFeedback
+        )
+    }
+}
+
+// ── 👍 / 👎 버튼 ──────────────────────────────────────────────────────────────
+@Composable
+private fun FeedbackButtons(
+    feedback: Sentiment?,
+    onSubmitFeedback: (Sentiment) -> Unit
+) {
+    val submitted = feedback != null
+
+    Row(
+        modifier              = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        FeedbackChip(
+            emoji        = "👍",
+            label        = "좋아요",
+            selected     = feedback == Sentiment.LIKE,
+            dimmed       = submitted && feedback != Sentiment.LIKE,
+            accentColor  = WarmSuccess,
+            onClick      = { if (!submitted) onSubmitFeedback(Sentiment.LIKE) },
+            modifier     = Modifier.weight(1f)
+        )
+        FeedbackChip(
+            emoji        = "👎",
+            label        = "별로예요",
+            selected     = feedback == Sentiment.DISLIKE,
+            dimmed       = submitted && feedback != Sentiment.DISLIKE,
+            accentColor  = WarmError,
+            onClick      = { if (!submitted) onSubmitFeedback(Sentiment.DISLIKE) },
+            modifier     = Modifier.weight(1f)
+        )
+    }
+}
+
+@Composable
+private fun FeedbackChip(
+    emoji: String,
+    label: String,
+    selected: Boolean,
+    dimmed: Boolean,
+    accentColor: Color,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val bg = when {
+        selected -> accentColor.copy(alpha = 0.18f)
+        dimmed   -> WarmDivider.copy(alpha = 0.35f)
+        else     -> WarmContainer
+    }
+    val textColor = when {
+        selected -> accentColor
+        dimmed   -> WarmBrownMid.copy(alpha = 0.55f)
+        else     -> WarmBrown
+    }
+    Row(
+        modifier              = modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(bg)
+            .clickable(enabled = !dimmed && !selected, onClick = onClick)
+            .padding(vertical = 10.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment     = Alignment.CenterVertically
+    ) {
+        Text(text = emoji, fontSize = 16.sp)
+        Spacer(modifier = Modifier.width(6.dp))
+        Text(
+            text       = label,
+            color      = textColor,
+            fontSize   = 13.sp,
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.SemiBold
+        )
     }
 }
 
